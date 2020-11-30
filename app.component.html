@@ -1,11 +1,14 @@
+
 <section>
   <div class='has-background-info'>
-    The title is {{title}}  
+    app.component.html. title is {{title}}  
   </div>
+  subset is: {{subset}}
   <br><br>
   <textarea rows="8" cols="75">
-  click on a group (go to work-with-group)
-  drag a group left or right (change sequence of groups)
+    click on a group (expand width of the group)
+    click on a group again (go to work-with-group)
+    drag a group left or right (change sequence of groups)
   click on the new group icon ( add a new group, go to work-with-group)
   hover on a question (see more info about this question)
   click below a question (add a new question, go to work-with-question)
@@ -14,6 +17,18 @@
   </textarea>
 </section>
 
-<app-qnc></app-qnc>
+<app-qnc 
+  *ngIf="showQnc" 
+  [showQnc]="showQnc"
+  (showHideQncWwgOut)="showHideQncWwg($event)"
+  (subsetOut)="setSubsetOut($event)">
+</app-qnc>
 
+<app-qncwwg
+   *ngIf="showQncWwg" 
+   [showQnc]="showQnc"
+   [meow]="meow"
+   [subsetqncwwg]="subsetqncwwg"
+   (showHideQncOut)="showHideQnc($event)">
+</app-qncwwg>
 
