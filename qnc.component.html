@@ -1,0 +1,31 @@
+<section>
+  <p class='is-fullwidth has-background-info'> 
+     qnc component </p> 
+  hisChosenSubset: {{hisChosenSubset}} hisChosenQuest: {{hisChosenQuest}}
+   <div class="columns" >
+     <div class='column'
+       *ngFor="let subsetName of subsetArray; let sx=index"
+       id="{{'subsetHtmlId'+sx}}"
+     >
+        <div class = 'button has-background-link is-fullwidth'
+             (mouseenter) ="subsetMouseEnter(subsetName) " 
+             (click)='subsetClick(subsetName,sx)'  >
+          {{subsetName}} 
+        </div>
+          <div *ngFor="let q of questArray" >
+              <div *ngIf="q.subset == subsetName ">
+                <p *ngIf='hisEnteredSubset!=subsetName'>
+                  {{q.questNbr}} 
+                </p> 
+                <div *ngIf='hisEnteredSubset==subsetName'
+                     (click)='questClick(q.questNbr)'
+                     class='has-background-success'>
+                     {{q.questNbr}}  {{q.questTxt}} 
+                </div>
+            </div>
+          </div>
+     </div>
+    </div>
+</section>
+<button (click)='wingFooClick()'>wingFooClick</button>
+  
