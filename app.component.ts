@@ -9,33 +9,48 @@ export class AppComponent {
   title = 'Questool Admin'
   showQnc = true
   showQncWwg = false
+  showQncWwq = true
   subset = '?'
+  subsetArray = ['zzzy','aa']
   meow = 'mmmeeeooowww'
-  subsetqncwwg = '??subsetqncwwg??'
-
-  showHideQnc(){
-    console.log('running showHideQnc')
-    if (this.showQnc) {
-      this.showQnc = false
-    } else {
+  subsetQncWwg = '??subsetQncWwg??'
+  subsetsQncWwg = ['??subsetsQncWwg??']
+  rulesArray = ['??rulesQncWwg??']
+  rulesQncWwg = ['??rulesQncWwg??']
+  showQncFun(){
       this.showQnc = true
-    }
-  } // end showHideQnc
-
-  showHideQncWwg(){
-    console.log('running showHideQncWwg')
-    if (this.showQncWwg) {
       this.showQncWwg = false
-    } else {
-      this.showQncWwg = true
-    }
-  } // end showHideQnc
+      this.showQncWwq = false 
+  } // end showQncFun
 
-  setSubsetOut(event){
-    console.log('running setSubsetOut')
+  showQncWwgFun(event){
+    console.log('running showQncWwgFun')
     this.subset = event
-    this.subsetqncwwg = this.subset
-  } // end setSubsetOut
-   
+    this.subsetQncWwg = this.subset
+    this.showQnc = false
+    this.showQncWwg = true
+    this.showQncWwq = false
+  } // end showQncWwgFun
+
+  showQncWwqFun(event){
+    console.log('running showQncWwqFun')
+    this.subset = event
+    // this.subsetQncWwq = this.subset
+    this.showQnc = false
+    this.showQncWwg = false
+    this.showQncWwq = true
+  } // end showQncWwqFun
+
+  ssArrayQncWwgFun(event){
+    console.log('running ssArrayQncWwgFun')
+    this.subsetArray = event
+    this.subsetsQncWwg = this.subsetArray
+  } // end ssArrayQncWwgFun
+
+  rulesArrayQncWwgFun(event){
+    this.rulesArray = event
+    this.rulesQncWwg = this.rulesArray
+
+  }
 
 }

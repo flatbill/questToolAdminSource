@@ -4,6 +4,7 @@
     app.component.html. title is {{title}}  
   </div>
   subset is: {{subset}}
+  subsetArray is: {{subsetArray}}
   <br><br>
   <textarea rows="8" cols="75">
     click on a group (expand width of the group)
@@ -19,16 +20,30 @@
 
 <app-qnc 
   *ngIf="showQnc" 
-  [showQnc]="showQnc"
-  (showHideQncWwgOut)="showHideQncWwg($event)"
-  (subsetOut)="setSubsetOut($event)">
+  [showQnc]="showQnc"  
+  (subsetOut)="showQncWwgFun($event)"
+  (subsetsOut)="ssArrayQncWwgFun($event)"
+  (rulesOut)="rulesArrayQncWwgFun($event)"
+  (wwqOut)="showQncWwqFun($event)"
+
+  >
 </app-qnc>
 
 <app-qncwwg
    *ngIf="showQncWwg" 
    [showQnc]="showQnc"
    [meow]="meow"
-   [subsetqncwwg]="subsetqncwwg"
-   (showHideQncOut)="showHideQnc($event)">
+   [subsetQncWwg]="subsetQncWwg"
+   [subsetsQncWwg]="subsetsQncWwg"
+   [rulesQncWwg]="rulesQncWwg"
+   (doneQncWwgOut)="showQncFun($event)"
+   >
 </app-qncwwg>
 
+<app-qncwwq
+  *ngIf="showQncWwq" 
+  [showQnc]="showQnc"
+  [subsetsQncWwq]="subsetsQncWwq"
+  (doneQncWwqOut)="showQncFun($event)"
+> 
+</app-qncwwq>
