@@ -4,24 +4,31 @@ import { Component, OnInit, Input,
 @Component({
   selector: 'app-qncwwg',
   templateUrl: './qncwwg.component.html'
-  //styleUrls: ['./qncwwg.component.css']
 })
 export class QncwwgComponent implements OnInit {
 
   constructor() {}
   @Input('showQncWwg') showQncWwgName: boolean
   @Input() meow: string
-  @Input() subsetqncwwg: string
-  @Output() showHideQncOut = new EventEmitter<boolean>()
+  @Input() subsetQncWwg: string
+  @Input() subsetsQncWwg
+  @Input() rulesQncWwg
+  @Output() doneQncWwgOut = new EventEmitter<string>()
+  heWantsToWorkOnRule = false
   ngOnInit() {
+    console.table(this.rulesQncWwg)
   }
 
-  wingZooClick(){
-    console.log('wingZooClick')
-    alert(this.meow)
-    alert(this.subsetqncwwg)
-    this.showHideQncOut.emit(true);
+  doneQncWwg(){
+    console.log('doneQncWwg')
+    // alert(this.meow)
+      // alert(this.subsetQncWwg)
+    this.doneQncWwgOut.emit('nothing')
   }
- 
+
+  ruleClick(r,rx){
+    console.log('running ruleClick',rx,r)
+    this.heWantsToWorkOnRule = true
+  }
 
 }

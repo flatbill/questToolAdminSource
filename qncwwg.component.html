@@ -1,10 +1,63 @@
 <div class='has-background-info'>
-   qncwwg component
+  work-with-group:
+  <span class='has-text-weight-bold'>  {{subsetQncWwg}}  </span>
+    <a class="tag delete is-danger is-medium is-pulled-right" 
+        (click)='doneQncWwg()'>
+    </a>
 </div>
 
+<div>rules for 
+  <span class='has-text-weight-bold'>{{subsetQncWwg}} </span>
+</div>
+<div *ngFor='let r of rulesQncWwg, index as rx'> 
+  <div *ngIf="r.subset == subsetQncWwg ">
+    <div class='columns is-gapless'> 
+      <div class='column is-small has-background-info mb-1 '
+         (click)='ruleClick(r,rx)'> 
+        <span class=is-pulled-right>rule: &nbsp; </span> 
+      </div> &nbsp;
+      <div class='column button is-small is-info mb-1 '
+         (click)='ruleClick(r,rx)'> 
+        {{r.accum}} </div> &nbsp;
+      <div class='column button is-small is-info mb-1'
+         (click)='ruleClick(r,rx)'> 
+        {{r.oper}}  </div> &nbsp;
+      <div class='column button is-small is-info mb-1'
+         (click)='ruleClick(r,rx)' > 
+        {{r.thresh}} 
+      </div> &nbsp;
+      <div class='column'>
+        <button class='button is-small is-info mb-1 '
+            (click)='ruleClick("new",0)'  >
+           <span class='is-size-4y'> new &nbsp; &#43; </span>
+        </button>
+      </div>
 
-<button (click)='wingZooClick()'>
-    wingoZoo
-</button>
-in qncwwg we are working on subset: {{subsetqncwwg}}
-<br>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+ 
+    </div> 
+  </div>
+</div>
+
+<div *ngIf='heWantsToWorkOnRule'  
+     class='has-background-warning'>
+    heWantsToWorkOnRule</div>
+
+<textarea rows=13 cols=85>
+this component exists becuz.............
+we are working with a specific group
+we want to tie this specific group to scoreboard(s)
+we want to see the group //// scoreboard relationship
+we want to edit the rule (scoreboard oper thresh)
+we want to see something that clarifies
+when this specific group will appear (what rule).
+don't bother showing the min max of 
+all the scoreboards this group of questions
+could add into;  that's another task.
+
+lotsa work to build this component that simply shows which rules
+are in play for this one group.  Can you design something simpler?
+</textarea>
