@@ -11,21 +11,30 @@ export class QncComponent implements OnInit {
 
   constructor() {}
   @Input('showQnc') showQncName: boolean
-  @Output() showHideQncWwgOut = new EventEmitter<boolean>()
+  //@Output() showHideQncWwgOut = new EventEmitter<boolean>()
+  // @Output() showHideQncWwqOut = new EventEmitter<boolean>()
   @Output() subsetOut = new EventEmitter<string>()
+  @Output() subsetsOut = new EventEmitter()
+  @Output() rulesOut = new EventEmitter()
+  @Output() wwqOut = new EventEmitter()
   
 
   ngOnInit(): void {
     this.initSubsets()
     this.initQuestions()
+    this.initRules()
   }
 subsetArray = []
 questArray = []
+rulesArray = []
+qCountArray = [3,1,1,2,2]
 hisChosenSubset = '?'
 hisChosenSubsetIx = -1
 hisEnteredSubset = '?'
 hisChosenQuest = '?'
 saveSubsetHtmlId  =  '?'
+expandedSubset = '?'
+expandedSubsetHtmlId = '?'
 
   initSubsets(){
   this.subsetArray =
@@ -70,7 +79,7 @@ saveSubsetHtmlId  =  '?'
       qid: "1",
       questNbr: "003",
       questSeq: "004",
-      questTxt: "What's you parakeet's shoe size?",
+      questTxt: "What's your parakeet's shoe size?",
       preQuest: "",
       aca: ["11", "12", "13"],
       acaPointVals: [11, 12, 13],
@@ -159,43 +168,110 @@ saveSubsetHtmlId  =  '?'
   console.table(this.questArray)
   } //end initQUestions
 
-  subsetClick(s,sx){
-    console.log('he clicked subset',s,sx)
-    // shrink previously selected subset:
-     let elemIdToRemove = document.getElementById(this.saveSubsetHtmlId)
-    if (elemIdToRemove ) { 
-      elemIdToRemove.classList.remove("is-half")}
-    // expand the selected subset:
-    this.hisChosenSubsetIx = sx
-    this.hisChosenSubset = s
-    let buildHtmlId = 'subsetHtmlId' + sx.toString()
-    let elemId = document.getElementById(buildHtmlId)
-    elemId.classList.add("is-half")
-    if (buildHtmlId==this.saveSubsetHtmlId){
-      this.subsetClickAgain(s)}
-    this.saveSubsetHtmlId = buildHtmlId //remember for later
-    console.log(this.saveSubsetHtmlId)
+  initRules(){
+    this.rulesArray = 
+    [
+      {
+        cust: "1",
+        qid: "1",
+        subset: "parakeetFollowOn",
+        accum: "pk1",
+        oper: ">",
+        thresh: 0
+      }
+      ,
+      {
+        cust: "1",
+        qid: "1",
+        subset: "iqFollowOn",
+        accum: "iqAccum",
+        oper: "==",
+        thresh: 1
+      }  
+      
+    ]
+    console.table(this.questArray)
+    } //end initRules
+  
+  subsetTagClick(s,sx){
+    console.log('running subsetTagClick',s,sx)
+    // this.shrinkSubset() // shrink previous subset
+    // this.expandSubset(s,sx) // expand the selected subset
+    this.zoomInOnSubset(s)
+  } // end subsetClick
 
+  subsetClick(s,sx){
+    console.log('running subsetClick',s,sx)
+    this.hisChosenSubset = s
+    this.shrinkSubset()
+     if ( s != this.expandedSubset ) {
+      // expand the newly selected subset
+      this.expandSubset(s,sx) 
+     }else{ 
+      this.expandedSubset = '?'
+      this.expandedSubsetHtmlId = '?'
+    }
   } // end subsetClick
 
   subsetMouseEnter(s){
-     console.log('mouse entered subset', s)
+    console.log('mouse entered subset', s)
     this.hisEnteredSubset = s
   } // end subsetMouseEnter
 
-  questClick(q){
-    console.log('quest click:', q)
-    this.hisChosenQuest = q
-  } // endquestClick
+  shrinkSubset(){
+    // shrink previously expanded subset:
+    console.log('running shrinkSubset ', this.expandedSubsetHtmlId)
+    let elemIdToRemove = document.getElementById(this.expandedSubsetHtmlId)
+    if (elemIdToRemove ) { 
+        elemIdToRemove.classList.remove("is-half")}
+  }
 
-  wingFooClick(){
-    console.log('running wingFooClick')
-    this.showHideQncWwgOut.emit(true)
+  expandSubset(s,sx){
+    console.log('running expandSubset', s)
+    this.hisChosenSubsetIx = sx
+    ////this.hisChosenSubset = s
+    let buildHtmlId = 'subsetHtmlId' + sx.toString()
+    let elemId = document.getElementById(buildHtmlId)
+    elemId.classList.add("is-half")
+    this.expandedSubset = s
+    this.expandedSubsetHtmlId = buildHtmlId
+    if (  s == 'new' ){
+      //lets zoom in on his clicked on subset
+      this.zoomInOnSubset(s)}
+    this.saveSubsetHtmlId = buildHtmlId //remember for later
+    console.log('saving html id',this.saveSubsetHtmlId)
   }
-  subsetClickAgain(subset){
-    console.log('running subsetClickAgain',subset)
-    this.showHideQncWwgOut.emit(true)
+
+  questClick(q,s){
+    console.log('quest click:', q, s)
+    this.hisChosenQuest = q
+    this.zoomInOnQuestion(q,s)
+
+  } // endquestClick
+  questTagClick(q,s){
+    this.jumpToQuestions(q,s)
+
+  }
+  zoomInOnSubset(subset){
+    // user wants to jump into QncWwg work-with-group
+    console.log('running zoomInOnSubset',subset)
+    //this.showHideQncWwgOut.emit(true)
     this.subsetOut.emit(subset)
+    this.subsetsOut.emit(this.subsetArray)
+    this.rulesOut.emit(this.rulesArray)
+  } // end zoomInOnSubset
+
+  zoomInOnQuestion(q,s){
+    alert('running zoomInOnQuestion')
+    console.log('running zoomInOnQuestion')
+    // this.showHideQncWwqOut.emit(true)
+    // user wants to jump  work on one question
   }
+
+  jumpToQuestions(q,s){
+    // this.showHideQncWwqOut.emit(true)
+    this.wwqOut.emit(true)
+  }
+
 
 } //end qnc component class

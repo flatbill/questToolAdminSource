@@ -1,31 +1,45 @@
-<section>
-  <p class='is-fullwidth has-background-info'> 
-     qnc component </p> 
+<section >
+  <p class='is-fullwidth has-background-info '> 
+     QnC Questionnaire Crud </p> 
   hisChosenSubset: {{hisChosenSubset}} hisChosenQuest: {{hisChosenQuest}}
-   <div class="columns" >
-     <div class='column'
+   <div class="columns is-gapless" >
+     <div class='column is-clipped'
        *ngFor="let subsetName of subsetArray; let sx=index"
-       id="{{'subsetHtmlId'+sx}}"
-     >
-        <div class = 'button has-background-link is-fullwidth'
+       id="{{'subsetHtmlId'+sx}}" >
+       <span class = 'button has-background-link is-fullwidth selz-text-trunc'
              (mouseenter) ="subsetMouseEnter(subsetName) " 
              (click)='subsetClick(subsetName,sx)'  >
-          {{subsetName}} 
-        </div>
-          <div *ngFor="let q of questArray" >
-              <div *ngIf="q.subset == subsetName ">
-                <p *ngIf='hisEnteredSubset!=subsetName'>
-                  {{q.questNbr}} 
-                </p> 
-                <div *ngIf='hisEnteredSubset==subsetName'
-                     (click)='questClick(q.questNbr)'
-                     class='has-background-success'>
-                     {{q.questNbr}}  {{q.questTxt}} 
-                </div>
-            </div>
-          </div>
+         <span 
+             *ngIf='expandedSubset==subsetName'
+             class='tag is-small has-background-info is-pulled-left'
+           (click)='subsetTagClick(subsetName,sx)' 
+             >
+           rules 
+        </span> &nbsp;
+
+          <span>  {{subsetName}} &nbsp;  </span>
+          <span *ngIf='expandedSubset==subsetName'
+              (click)='questTagClick(0,subsetName)' 
+                class=' tag has-background-success is-pulled-right'>
+             questions <!-- {{qCountArray[sx]}}  -->
+          </span>
+        </span>
+
+       <span *ngFor="let q of questArray" >
+         <span  *ngIf="q.subset == subsetName ">
+            <div class='selz-text-trunc' 
+                   (click)=questClick(q.questNbr,subsetName) >
+                  {{q.questNbr}} {{q.questTxt}}  
+            </div>  
+         </span>
+       </span>
      </div>
-    </div>
+     <div class='column'>
+       <button class='button has-background-link'
+           (click)='subsetClick("new",0)'  >
+          <span class='is-size-4y'> new &nbsp; &#43; </span>
+       </button>
+     </div>
+   </div>
 </section>
-<button (click)='wingFooClick()'>wingFooClick</button>
-  
+
