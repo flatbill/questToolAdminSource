@@ -5,13 +5,15 @@ import { AppComponent } from './app.component';
 import { QncComponent } from './qnc/qnc.component';
 import { QncwwgComponent } from './qncwwg/qncwwg.component';
 import { QncwwqComponent } from './qncwwq/qncwwq.component';
+import { QncwwqdComponent } from './qncwwqd/qncwwqd.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QncComponent,
     QncwwgComponent,
-    QncwwqComponent
+    QncwwqComponent,
+    QncwwqdComponent
   ],
   imports: [
     BrowserModule

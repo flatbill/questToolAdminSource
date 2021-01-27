@@ -1,0 +1,143 @@
+<div class='is-fullwidth has-background-warning is-size-5'>
+    Question Detail: {{questionsIn[qx].questNbr}}
+    <span class='has-text-weight-bold'> 
+       {{questionsIn[qx].questTxt}} </span>
+     
+  <a class='button has-background-warning is-small is-pulled-right '
+    (click)='doneWwqd()'>
+     done &#10060; 
+  </a>  
+
+ <a class='button has-background-warning is-small is-pulled-right '
+  (click)='showHideHelp()'>
+   help &#10068; 
+ </a>
+</div>
+<div>
+  <span class='button is-info'
+        (click)='prevButClick()'
+  >  &#5176; prev</span> &nbsp;
+  <span class='button is-info'
+      (click)='nextButClick()'
+  > next &#5171;  </span> &nbsp;
+  <span class='button is-info'
+  (click)='filtButClick()'
+> Filter Group: {{filterBySubset}}  </span> &nbsp;
+  <span class='button is-info'
+     (click)='addButClick()'
+  > add  </span> &nbsp;
+
+  <span class='button is-info'
+    (click)='delButClick()'
+  > delete </span> &nbsp;
+
+  <span class='button is-info'
+    (click)='saveButClick()'
+  > save </span> &nbsp;
+</div>
+
+<div>  
+<table class=' table has-background-success-light is-narrow'>
+  <tr>
+    <td><label>question nbr: </label></td>
+    <td><input  disabled
+      class='has-background-success-light '
+      value= {{questionsIn[qx].questNbr}}
+      size="4"
+      autocomplete="off"></td>
+  </tr>
+  <tr>
+<td><label>sequence: </label></td>
+<td><input  
+  class='input is-small '
+  value= {{questionsIn[qx].questSeq}}
+  size="4"
+  (change)=questSeqChg($event,qx)              
+  autocomplete="off"></td>
+  </tr>
+  <tr>
+  <td><label>group: </label></td>
+  <td><input  
+    class='input is-small '
+  value= {{questionsIn[qx].subset}}
+  size="20"
+  (change)=subsetChg($event,qx)              
+  autocomplete="off"> </td>
+  </tr>
+
+  <tr>
+  <td><label>pre-Question: </label></td>
+  <td><input  
+    class='input is-small '
+  value= {{questionsIn[qx].preQuest}}
+  size="35"
+  (change)=preQuestChg($event,qx)              
+  autocomplete="off"> </td>
+  </tr>
+  <tr>
+  <td><label>Question: </label></td>
+  <td><input  
+    class='input is-small '
+    value= {{questionsIn[qx].questTxt}}
+    size="35"
+    (change)=questTxtChg($event,qx)              
+    autocomplete="off"> </td>
+  </tr>
+  <tr>&nbsp;</tr>
+ 
+</table>
+
+<!-- <table class=' table has-background-success-light is-narrow'>
+  <tr><td>
+  <label>how many answer choices: </label>
+  <input  
+    class='input is-small '
+    type="number"
+    value= {{answerChoiceCount}}
+    size="1"
+    min="1" 
+    max="9" 
+    maxlength="2"
+    (change)=questAcaCountChg($event,qx)              
+    autocomplete="off"> 
+    </td></tr>
+</table> -->
+
+<table class=' table has-background-success-light is-narrow'>
+  <thead>
+    <th>ScoreBoard:</th>
+    <th><input  
+      class='input is-small'
+      value= {{questionsIn[qx].accum[0]}}
+      size="14"
+      (change)=questAccumChg($event,qx)              
+      autocomplete="off"> </th>
+    
+    <tr>
+      <th>Choice</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr *ngFor="let a of questionsIn[qx].aca; let ax=index" > 
+
+<td><input  
+  class='input is-small '
+  value= {{questionsIn[qx].aca[ax]}}
+  size="15"
+  (change)=questAcaChg($event,qx,ax)              
+  autocomplete="off"> 
+</td>  
+  <td>
+  <input  
+  class='input is-small '
+  value= {{questionsIn[qx].acaPointVals[ax]}}
+  size="2"
+  (change)=questAcaPointValChg($event,qx,ax)              
+  autocomplete="off"> 
+</td>
+</tr>
+  
+  </tbody>
+</table>
+</div>

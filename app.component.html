@@ -1,49 +1,61 @@
 
-<section>
-  <div class='has-background-info'>
-    app.component.html. title is {{title}}  
+<section *ngIf='showAppComponent'>
+  <div class='has-background-warning-light is-size-6 '>
+    {{title}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class='is-size-7'>
+      app.component.html &nbsp;&nbsp;&nbsp;&nbsp;
+      contains components: qnc wwg wwq wwqd
+    </span>
   </div>
-  subset is: {{subset}}
-  subsetArray is: {{subsetArray}}
-  <br><br>
-  <textarea rows="8" cols="75">
-    click on a group (expand width of the group)
-    click on a group again (go to work-with-group)
-    drag a group left or right (change sequence of groups)
-  click on the new group icon ( add a new group, go to work-with-group)
-  hover on a question (see more info about this question)
-  click below a question (add a new question, go to work-with-question)
-  drag a question left or right ( put it in a different group)
-  drag a question up or down ( put it in a different sequence)								 
-  </textarea>
 </section>
 
 <app-qnc 
   *ngIf="showQnc" 
-  [showQnc]="showQnc"  
-  (subsetOut)="showQncWwgFun($event)"
+  [subsetsIn]="subsetArray"
+  [questionsIn]="questArray"
+  [showQnc]="showQnc" 
+  (subsetOut)="subsetFromQncFun($event)"
   (subsetsOut)="ssArrayQncWwgFun($event)"
   (rulesOut)="rulesArrayQncWwgFun($event)"
-  (wwqOut)="showQncWwqFun($event)"
-
+  (wwgJumpOut)="showWwgFun($event)"
+  (wwqJumpOut)="showWwqFun($event)"
+  (wwqdJumpOut)="showWwqdFun($event)"
+  (qncQuestOut)="setQuestFromQncFun($event)"
   >
 </app-qnc>
 
 <app-qncwwg
    *ngIf="showQncWwg" 
    [showQnc]="showQnc"
+   [rulesIn]="rulesArray"
+   [subsetIn]="subset"
+   [questionsIn]="questArray"
    [meow]="meow"
-   [subsetQncWwg]="subsetQncWwg"
    [subsetsQncWwg]="subsetsQncWwg"
-   [rulesQncWwg]="rulesQncWwg"
    (doneQncWwgOut)="showQncFun($event)"
+   (rulesQncWwgOut)="foxTrot($event)"
    >
 </app-qncwwg>
 
 <app-qncwwq
   *ngIf="showQncWwq" 
   [showQnc]="showQnc"
+  [subsetIn]="subset"
   [subsetsQncWwq]="subsetsQncWwq"
-  (doneQncWwqOut)="showQncFun($event)"
+  [questionsIn]="questArray"
+  (wwqQuestOut)="setQuestFromWwqFun($event)"
+  (doneWwqOut)="showQncFun($event)"
+  (jumpWwqdOut)="showWwqdFun($event)"
 > 
 </app-qncwwq>
+
+<app-qncwwqd 
+  *ngIf="showQncWwqd" 
+  [questionNbrIn]="daQuestion"
+  [questionsIn]="questArray"
+  [rulesIn]="rulesArray"
+  [subsetsIn]="subsetArray"
+  (doneQncWwqdOut)="doneWwqdFun($event)"
+>
+</app-qncwwqd>
+

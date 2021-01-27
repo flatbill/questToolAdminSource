@@ -1,0 +1,37 @@
+<div class='is-fullwidth has-background-warning is-size-5'>
+    Questions for Group:
+    <span class='has-text-weight-bold'> {{subsetIn}} </span>
+     
+  <a class='button has-background-warning is-small is-pulled-right '
+    (click)='doneWwq()'>
+     done &#10060; 
+  </a>  
+
+ <a class='button has-background-warning is-small is-pulled-right '
+  (click)='showHideHelp()'>
+   help &#10068; 
+ </a>
+</div>
+  <table class='table'>
+    <thead><tr><th>Nbr</th><th>Pre Question</th><th>Question</th><th>Scoreboard </th></tr></thead>
+    <tbody>
+        <tr *ngFor='let q of questionArrayThisGroup, index as qx'
+             class='has-background-success'
+        >        
+            <td><input value={{q.questNbr}} size="3" maxlength="3"></td> 
+            <td><input value={{q.preQuest}} size="30" ></td> 
+            <td><input value={{q.questTxt}} size="40" ></td> 
+            <td><input value={{q.accum}} size="15" ></td> 
+            <td>
+              <button class='button is-small is-info' 
+                    (click)=detailButClicked(q.questNbr)> 
+                Details
+
+              </button>
+            </td>
+        </tr>
+        <br>
+      
+    </tbody>
+  </table>
+            

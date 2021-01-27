@@ -1,0 +1,65 @@
+<section >
+  <div class='is-fullwidth has-background-warning is-size-5'> 
+     Question Groups  
+     <span class='is-size-7'>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      qnc.component.html
+     </span>
+
+    <span class='button has-background-warning is-small is-pulled-right mb-6'
+        (click)='showHideHelp()'>
+      <span> help &#10068; </span>
+    </span>
+  </div> 
+  
+
+   <div class="columns is-gapless  is-multiliney" >
+     <div class='column is-clipped'
+       *ngFor="let subsetName of subsetArray; let sx=index"
+       id="{{'subsetHtmlId'+sx}}" >
+       <span class = 'button has-background-link is-fullwidth selz-text-trunc'
+             (mouseenter) ="subsetMouseEnter(subsetName) " 
+             (click)='subsetClick(subsetName,sx)'  >
+         <span 
+             *ngIf='expandedSubset==subsetName'
+             class='tag is-small has-background-info is-pulled-left'
+           (click)='subsetTagClick(subsetName,sx)' 
+             >
+          Settings
+        </span> &nbsp;
+
+          <span>  {{subsetName}} &nbsp;  </span>
+          <span *ngIf='expandedSubset==subsetName'
+              (click)='questTagClick(0,subsetName)' 
+                class=' tag has-background-success is-pulled-right'>
+             Questions <!-- {{qCountArray[sx]}}  -->
+          </span>
+        </span>
+
+       <span *ngFor="let q of questArray" >
+         <span  *ngIf="q.subset == subsetName ">
+            <div 
+              [className]= "expandedSubset==subsetName 
+                          ? 'selz-text-trunc mt-1 has-background-success ' 
+                          : 'selz-text-trunc mt-1' " 
+              (click)=questClick(q.questNbr,subsetName) >
+                  {{q.questNbr}} {{q.questTxt}}  
+            </div>  
+         </span>
+       </span>
+     </div>
+     <div class='column'>
+       <button class='button has-background-link'
+           (click)='subsetClick("NewGroupName",0)'  >
+          <span class='is-size-4y'> new group  &#10133; &#9997;   </span>
+       </button>
+
+     </div>
+   </div>
+</section>
+
+<br><br>
+<div>
+  hisChosenSubset: {{hisChosenSubset}} hisChosenQuest: {{hisChosenQuest}}
+</div>
+
