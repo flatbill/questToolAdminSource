@@ -1,4 +1,4 @@
-
+<div class='containery'>
 <section *ngIf='showAppComponent'>
   <div class='has-background-warning-light is-size-6 '>
     {{title}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -9,8 +9,7 @@
   </div>
 </section>
 
-<app-qnc 
-  *ngIf="showQnc" 
+<app-qnc   *ngIf="showQnc" 
   [subsetsIn]="subsetArray"
   [questionsIn]="questArray"
   [showQnc]="showQnc" 
@@ -24,8 +23,7 @@
   >
 </app-qnc>
 
-<app-qncwwg
-   *ngIf="showQncWwg" 
+<app-qncwwg   *ngIf="showQncWwg" 
    [showQnc]="showQnc"
    [rulesIn]="rulesArray"
    [subsetIn]="subset"
@@ -33,29 +31,36 @@
    [meow]="meow"
    [subsetsQncWwg]="subsetsQncWwg"
    (doneQncWwgOut)="showQncFun($event)"
+   (wwqJumpOut) = "showWwqFun($event)"
    (rulesQncWwgOut)="foxTrot($event)"
    >
 </app-qncwwg>
 
-<app-qncwwq
-  *ngIf="showQncWwq" 
+<app-qncwwq  *ngIf="showQncWwq" 
   [showQnc]="showQnc"
   [subsetIn]="subset"
   [subsetsQncWwq]="subsetsQncWwq"
   [questionsIn]="questArray"
+  [questionsIn2]="questArray2"
+  [rulesIn]="rulesArray"
   (wwqQuestOut)="setQuestFromWwqFun($event)"
   (doneWwqOut)="showQncFun($event)"
   (jumpWwqdOut)="showWwqdFun($event)"
+  (wwqQuestArray2Out)="setQuest2FromWwqFun($event)"
 > 
 </app-qncwwq>
 
-<app-qncwwqd 
-  *ngIf="showQncWwqd" 
+<app-qncwwqd   *ngIf="showQncWwqd" 
   [questionNbrIn]="daQuestion"
   [questionsIn]="questArray"
+  [questionsIn2]="questArray2"
   [rulesIn]="rulesArray"
   [subsetsIn]="subsetArray"
   (doneQncWwqdOut)="doneWwqdFun($event)"
 >
 </app-qncwwqd>
 
+<app-qncconv *ngIf="showQncConv" >
+</app-qncconv>
+
+</div>

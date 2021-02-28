@@ -6,6 +6,7 @@ import { QncComponent } from './qnc/qnc.component';
 import { QncwwgComponent } from './qncwwg/qncwwg.component';
 import { QncwwqComponent } from './qncwwq/qncwwq.component';
 import { QncwwqdComponent } from './qncwwqd/qncwwqd.component';
+import { QncconvComponent } from './qncconv/qncconv.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { QncwwqdComponent } from './qncwwqd/qncwwqd.component';
     QncComponent,
     QncwwgComponent,
     QncwwqComponent,
-    QncwwqdComponent
+    QncwwqdComponent,
+    QncconvComponent
   ],
   imports: [
     BrowserModule

@@ -1,5 +1,6 @@
-import {  HostListener, Component } from '@angular/core';
-//import { VirtualTimeScheduler } from 'rxjs';
+import {  HostListener, Component } from '@angular/core'
+import api from 'src/utils/api'
+
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,12 @@ export class AppComponent {
   }
 
   title = 'Questool Admin'
-  showQnc = true 
+  showQnc = false 
   showQncWwg = false
-  showQncWwq = false
+  showQncWwq = true
   showQncWwqd = false 
-  showAppComponent = true // set this true for debugging
+  showQncConv = false // set this true for ed338 conv
+  showAppComponent = false // set this true for debugging
   subsetArray = ['nothing','yet']
   subset = 'noSubsetYet'
   meow = 'mmmeeeooowww'
@@ -27,10 +29,16 @@ export class AppComponent {
   subsetsQncWwg = ['??subsetsQncWwg??']
   subsetsQncWwq = ['??subsetsQncWwq??']
   questionsQncWwq = ['??questionsQncWwq??']
+  questions2QncWwq = ['??questions2QncWwq??']
   rulesArray = [] //'??rulesQncWwg??'
   questArray = [] 
+  questArray2 = [] 
+  accumArray = []
   daQuestion = 'no Question yet'
   wwqdCaller = 'no wwqdCaller yet'
+  qid = '2' // billy fix, set from url
+  cust = '1'
+  accumObj = {}
   ngOnInit()  {
     this.initSubsets()
     this.initRules()
@@ -50,33 +58,34 @@ export class AppComponent {
   initRules(){
     this.rulesArray = 
     [
-      {
-        cust: "1",
-        qid: "1",
-        subset: "parakeetFollowOn",
-        accum: "pk1",
-        oper: ">",
-        thresh: 0
-      }
-      ,
-      {
-        cust: "1",
-        qid: "1",
-        subset: "iqFollowOn",
-        accum: "iqAccum",
-        oper: "==",
-        thresh: 1
-      }  
-      
+    {
+      cust: "1",
+      qid: "2",
+      subset: "parakeetFollowOn",
+      accum: "pk1",
+      oper: ">",
+      thresh: 0
+    },
+    {
+      cust: "1",
+      qid: "2",
+      subset: "iqFollowOn",
+      accum: "iqAccum",
+      oper: "==",
+      thresh: 1
+    }
     ]
   } //end initRules
 
-  initQuestions(){
-    this.questArray = 
+
+ initQuestions(){
+  //this.launchReadAllDbTables() 
+  // temp disable to reduce fauna db usage
+  this.questArray = //billy temp reduce db usage
     [
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "001",
         questSeq: "001",
         questTxt: "Welcome!",
@@ -89,7 +98,7 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "002",
         questSeq: "003",
         questTxt: "Do you have a pet parakeet?",
@@ -102,7 +111,7 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "003",
         questSeq: "004",
         questTxt: "What's your parakeet's shoe size?",
@@ -115,20 +124,20 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "004",
         questSeq: "001",
         questTxt: "Would you like to test your IQ?",
         preQuest: "",
         aca: ["yes", "no"],
         acaPointVals: [1, 0],
-        accum: ["iqAccum"],
+        accum: ["iq1"],
         subset: "main2"
       }   
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "005",
         questSeq: "001",
         questTxt: "Who is buried in Grant's tomb?:",
@@ -141,7 +150,7 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "006",
         questSeq: "002",
         questTxt: "How many inches is 6 feet?:",
@@ -154,7 +163,7 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "007",
         questSeq: "001",
         questTxt: "Have you ever seen lassie?",
@@ -167,7 +176,7 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "008",
         questSeq: "002",
         questTxt: "How would you rate your mother?",
@@ -180,7 +189,7 @@ export class AppComponent {
       ,
       {
         cust: "1",
-        qid: "1",
+        qid: "2",
         questNbr: "009",
         questSeq: "002",
         questTxt: "Welcome.  Oh, I already said that!",
@@ -191,8 +200,9 @@ export class AppComponent {
         subset: "main1"
       }  
     ]
-    console.table(this.questArray)
-  } //end initQuestions
+  this.questArray2 = this.questArray
+  //console.table(this.questArray)
+} //end initQuestions
 
   showQncFun(){
     console.log('running app showQncFun')
@@ -224,8 +234,12 @@ export class AppComponent {
   }
 
   showWwqFun(){
-    console.log('running app showWwqFun')
+    // alert('running app showWwqFun')
+    // console.table(this.questArray2)
+    // alert('239 see console.table for quest array2')
+    // console.log('running app showWwqFun')
     this.questionsQncWwq = this.questArray 
+    this.questions2QncWwq = this.questArray2
     this.subsetQncWwq = this.subset 
     this.showQnc = false
     this.showQncWwg = false
@@ -253,7 +267,8 @@ export class AppComponent {
   }
 
   showWwqdFun(){
-    console.log('running app showWwqdFun')
+    // console.log('running app showWwqdFun')
+    // console.table(this.questArray2)
     this.showQnc = false
     this.showQncWwg = false
     this.showQncWwq = false
@@ -264,6 +279,11 @@ export class AppComponent {
     console.log('running app questArrayQncWwqFun')
     this.questionsQncWwq = ev
   } // end questArrayQncWwqFun
+
+  setQuest2FromWwqFun(ev){
+    console.log('running app setQuest2FromWwqFun')
+    this.questArray2 = ev
+  }
 
   ssArrayQncWwgFun(ev){
     console.log('running app ssArrayQncWwgFun')
@@ -304,8 +324,86 @@ export class AppComponent {
   
 sortArrays(){
   this.questArray
-  .sort((a, b) => (a.questSeq > b.questSeq) ? 1 : (a.questSeq === b.questSeq) ? ((a.questNbr > b.questNbr) ? 1 : -1) : -1 )
+  .sort((a, b) => (a.questNbr > b.questNbr) ? 1 : (a.questNbr === b.questNbr) ? ((a.questSeq > b.questSeq) ? 1 : -1) : -1 )
   console.table(this.questArray)
 }
+
+launchReadAllDbTables = () => {
+  api.qtReadQuestions(this.cust,this.qid)
+      .then 
+      (   (qtDbRtnObj) => 
+        {
+          console.log(' running .then of qtReadQuestions') 
+          console.table(qtDbRtnObj)
+          this.loadQuestionsFromDbToQuestArray(qtDbRtnObj)
+          this.buildListOfAccumsFromQuestArray()
+          this.launchQtReadRules() //rules
+        }
+      )
+      .catch(() => {  // api.qtReadQuestions returned an error 
+        console.log('api.qtReadQuestions error.' )
+      })
+}  // end launchReadAllQuestions
+ 
+loadQuestionsFromDbToQuestArray(qtDbObj){
+  console.log('running loadQuestionsFromDbToQuestArray')
+  // input is qtDbObj from database and output allQuestions array.
+  // get here after .then of reading db,
+  // so qtDbObj is ready to use.
+  this.questArray.length = 0 //blank out array, then load it
+  for (let i = 0; i < qtDbObj.length; i++) {
+    this.questArray.push(qtDbObj[i].data)
+    // console.log('questSeq:', this.questArray[i].questSeq)
+  }
+}  // end loadQuestionsFromDbToQuestArray
+ 
+ launchQtReadRules = () => {
+  console.log('running LaunchQtReadRules')
+  api.qtReadRules(this.cust,this.qid)
+    .then 
+      (   (qtDbRtnObj) => 
+        {
+          console.log(' running .then of api.qtReadRules') 
+          this.buildListOfRules(qtDbRtnObj)
+        }
+      )
+      .catch(() => {  // api.qtReadRules returned an error 
+        console.log('api.qtReadRules error. cust & qid:' , this.cust, ' ', this.qid)
+      })
+
+} //end launchQtReadRules
+
+buildListOfRules(qtDbObj){
+  console.log('running app buildListOfRules')
+  for (let i = 0; i < qtDbObj.length; i++) {
+    this.rulesArray.push(qtDbObj[i].data)
+  }
+  console.table(this.rulesArray)
+
+} // end buildListOfRules
+
+buildListOfAccumsFromQuestArray(){
+  console.log('running buildListOfAccumsFromQuestArray')
+  // read all questions array, find the unique accumulators.
+  // push a newly discovered accum into accumArray.
+  for (let i = 0; i < this.questArray.length; i++) {
+    // this question has an array of accumulators.
+    for (let j = 0; j < this.questArray[i].accum.length; j++) {
+      // find the accum in accumArray. if not found, add it.
+      let position = 
+        this.accumArray.map(function(a) { return a.accum })
+        .indexOf(this.questArray[i].accum[j])
+      if (position < 0){
+          this.accumObj = { 
+            'accum': this.questArray[i].accum[j],
+            'accumFedByQuests' : ['001','002','003']
+          }
+        this.accumArray.push(this.accumObj)
+      }
+    }
+  }
+  console.log('done buiding accumArray:',this.accumArray)
+}  // end buildListOfAccumsFromQuestArray
+
 
 }
