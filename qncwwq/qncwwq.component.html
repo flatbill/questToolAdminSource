@@ -1,37 +1,117 @@
 <div class='is-fullwidth has-background-warning is-size-5'>
-    Questions for Group:
-    <span class='has-text-weight-bold'> {{subsetIn}} </span>
+    &nbsp; Questions wwq
+
      
-  <a class='button has-background-warning is-small is-pulled-right '
+   <a class='button has-background-warning is-small is-pulled-right '
     (click)='doneWwq()'>
      done &#10060; 
-  </a>  
+   </a>  
 
- <a class='button has-background-warning is-small is-pulled-right '
+   <a class='button has-background-warning is-small is-pulled-right '
   (click)='showHideHelp()'>
-   help &#10068; 
- </a>
-</div>
-  <table class='table'>
-    <thead><tr><th>Nbr</th><th>Pre Question</th><th>Question</th><th>Scoreboard </th></tr></thead>
-    <tbody>
-        <tr *ngFor='let q of questionArrayThisGroup, index as qx'
-             class='has-background-success'
-        >        
-            <td><input value={{q.questNbr}} size="3" maxlength="3"></td> 
-            <td><input value={{q.preQuest}} size="30" ></td> 
-            <td><input value={{q.questTxt}} size="40" ></td> 
-            <td><input value={{q.accum}} size="15" ></td> 
-            <td>
-              <button class='button is-small is-info' 
-                    (click)=detailButClicked(q.questNbr)> 
-                Details
+   help &#10068; &nbsp;
+   </a>
 
-              </button>
-            </td>
+   <button (click)='rq()'  
+     class='button is-small is-info is-pulled-right' >
+     reset questions</button>
+     
+  <span class='is-pulled-right'>
+    <span class='tag is-dark is-small is-vcentered' 
+      *ngIf='msg1.length > 0'>
+      {{msg1}} 
+    </span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ </span>
+
+</div>
+
+
+  <table class='table is-fullwidth'>
+    <thead><tr>
+      <th class='is-clickable' 
+        (click)="colHeadClicked('nbr')" > Nbr <br>  
+        <span *ngIf='colHeadSf'> 
+          <span (click)="colSort('questNbr','des')"> {{symArDn}} </span> 
+          <span (click)="colSort('questNbr','asc')"> {{symArUp}} </span> 
+          <span (click)="colFilt('questNbr','Nbr')" > {{symFilt}} </span> 
+        </span> 
+      </th>
+
+    <th class='is-clickable'
+      (click)="colHeadClicked('seq')" > Seq  <br>
+        <span *ngIf='colHeadSf'> 
+          <span (click)="colSort('questSeq','des')"> {{symArDn}} </span> 
+          <span (click)="colSort('questSeq','asc')"> {{symArUp}} </span> 
+          <span (click)="colFilt('questSeq','Sequence')"  > {{symFilt}} </span> 
+        </span> 
+    </th>
+
+      <th class='is-clickable'
+        (click)="colHeadClicked('grp')" >
+        
+        Group  <br>
+        <div><button (click)='jumpToGroup()'>groupie</button></div>
+        <span *ngIf='colHeadSf'> 
+          <span (click)="colSort('subset','des')"> {{symArDn}} </span> 
+          <span (click)="colSort('subset','asc')"> {{symArUp}} </span> 
+          <span (click)="colFilt('subset','Group')"  > {{symFilt}} </span> 
+        </span> 
+      </th> 
+      
+      <th class='is-clickable'
+        (click)="colHeadClicked('pre')" >Pre Question <br>
+        <span *ngIf='colHeadSf'> 
+          <span (click)="colSort('preQuest','des')"> {{symArDn}} </span> 
+          <span (click)="colSort('preQuest','asc')"> {{symArUp}} </span> 
+          <span (click)="colFilt('preQuest','Pre-Quest')" > {{symFilt}} </span> 
+        </span> 
+      </th>
+
+      <th class='is-clickable'
+        (click)="colHeadClicked('qTxt')" >Question <br>
+        <span *ngIf='colHeadSf'> 
+          <span (click)="colSort('questTxt','des')"> {{symArDn}} </span> 
+          <span (click)="colSort('questTxt','asc')"> {{symArUp}} </span> 
+          <span (click)="colFilt('questTxt','Question Text')" > {{symFilt}} </span> 
+        </span> 
+      </th>
+
+      <th class='is-clickable' 
+        (click)="colHeadClicked('accum')" >Add to Scoreboard <br>
+        <div><button (click)='jumpToRules()'>rules</button></div>
+
+        <span *ngIf='colHeadSf'> 
+          <span (click)="colSort('accum','des')"> {{symArDn}} </span> 
+          <span (click)="colSort('accum','asc')"> {{symArUp}} </span> 
+          <span (click)="colFilt('accum','Scoreboard')"  > {{symFilt}} </span> 
+        </span> 
+
+      </th>
+    </tr></thead>
+    <tbody class=none>
+        <tr *ngFor='let q of questArray2, index as qx'
+             class='has-background-success' 
+        >        
+        <!-- <td><input disabled value={{q.questNbr}} size="3"></td>  -->
+        <td > {{q.questNbr}} </td> 
+        <td> {{q.questSeq}}  </td> 
+        <td> {{q.subset}}    </td> 
+        <td> {{q.preQuest}}  </td> 
+        <td> {{q.questTxt}}  </td> 
+        <td> {{q.accum[0]}}  </td> 
+        <td> {{q.accum[1]}}  </td> 
+        <td> {{q.accum[2]}}  </td> 
+        <td>
+        <button class='button is-small is-info' 
+          (click)=detailButClicked(q.questNbr)> 
+          Details 
+        </button>
+
+        </td>
         </tr>
         <br>
       
-    </tbody>
+    </tbody> 
   </table>
-            
+

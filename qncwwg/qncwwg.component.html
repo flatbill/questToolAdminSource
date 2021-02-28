@@ -1,5 +1,5 @@
 <div class='is-fullwidth has-background-warning is-size-5'>
-   &nbsp; Work With Group
+   &nbsp; Work With Groups
    &nbsp;&nbsp;&nbsp;  
   <input id='htmlIdSubsetInput'
        type="text"  size="14" 
@@ -12,10 +12,10 @@
   >
 
 
-  <span class='is-size-7'>
+  <!-- <span class='is-size-7'>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     qncwwg.component.html
-  </span>
+  </span> -->
  
   <a class='button has-background-warning is-small is-pulled-right '
    (click)='doneWwg()'>
@@ -25,14 +25,21 @@
    (click)='showHideHelp()'>
     help &#10068; 
   </a>
-     
+  <span class='is-pulled-right'>&nbsp;</span>
+  <span class='tag is-pulled-right is-small is-dark is-vcentered' 
+        *ngIf='msg1.length > 0'>
+    {{msg1}} </span>
+  
+  <!-- <div *ngIf=radioButsDisabledYn> 
+   &nbsp; First, rename this new group &uarr; </div> -->
+
 </div>
 
 <br>
 
-<div class=" has-background-info-light">
+<div class=" has-background-danger-light">
 
-  <div  >
+  <fieldset  [disabled]=radioButsDisabledYn >
     <label class="checkbox" >
       <input type="checkbox" 
          id='htmlIdCheckboxNoRules'
@@ -53,7 +60,7 @@
          questions
     </label>
     <span> &#11107;</span>
-  </div>
+  </fieldset>
 </div>
 
 <span *ngIf='showDeleteRulesButTf'>
@@ -143,3 +150,9 @@
 </button>
 
 </section>
+
+<br>
+<button class='button is-success is-small'
+(click)='jumpToWwq()'>
+  Questions
+</button>

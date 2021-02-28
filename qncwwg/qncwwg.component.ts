@@ -1,8 +1,9 @@
-import { getParseErrors } from '@angular/compiler';
-import { not } from '@angular/compiler/src/output/output_ast';
+// import { getParseErrors } from '@angular/compiler';
+// import { not } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, Input, 
          EventEmitter, Output } from '@angular/core';
- 
+import api from 'src/utils/api'
+
 @Component({
   selector: 'app-qncwwg',
   templateUrl: './qncwwg.component.html'
@@ -11,30 +12,42 @@ export class QncwwgComponent implements OnInit {
   constructor() {}
   @Input('showQncWwg') showQncWwgName: boolean
   @Input() meow: string
-  //@Input() subsetQncWwgyyyyyy: string
   @Input() subsetsQncWwg
   @Input() rulesIn  
   @Input() subsetIn
   @Input() questionsIn
-
   @Output() doneQncWwgOut = new EventEmitter()
   @Output() rulesQncWwgOut = new EventEmitter() 
+  @Output() wwqJumpOut = new EventEmitter() 
+  msg1 = 'add or delete rules for this group.'
   hisChosenRule = '?-?'
-  //heWantsToWorkOnRule = false
   anyRulesYes = false // tied to radio button
   anyRulesNo = true // tied to radio button
   rulesArrayThisGroup = []
   newRuleButDisabledYn = true
-  newAccumName = 'newAccum01'
-  //saveButDisabledTf = true
+  radioButsDisabledYn = false
+  newAccumName = 'newScoreboard00'
   wordsThatPrefaceRules = 'no rules (always ask questions in)'
   showDeleteRulesButTf = false
   ruleRowHead ='rule:'
-  //saveCheckMarkOnTf = false
-  //heClickedIntoRule = false
   ruleRowThatWasBlurred = -1
   newRuleClicked = false
   state = {buttonText: "Initial text" } 
+  ruleObj = {}
+  rx = -1
+      // rx should be rulesIn index
+    // tx should be the rulesArrayThisGroup index
+    // in html and component, change occurrences to tx 
+  cust = '1' // where are we gonna get this from?
+  qid = '2' // where are we gonna get this from?
+  // (Event)  billy, (Event) parm is used for various qt functions,
+  //          but it ain't really used.  maybe kill (Event) and (ev) 
+  //          from these calls.
+  // i think there are two flavors of events:
+  // browser events, that chrome controls.  read those events in .ts 
+  // node.js events, that server-to-server calls controls. event handler.
+  //
+  // billy, fix the back button somehow.
   //but27 = document.querySelector("button")
   ngOnInit() {
     //alert('just starting wwg')
@@ -74,7 +87,8 @@ this.setPopState() //billy learn and fix back button
     this.setCursorOnhtmlIdSubsetInputWithDelay()
     
     if (this.subsetIn == 'NewGroupName1'){
-      alert('NewGroupName1, make him rename it.')
+      this.radioButsDisabledYn = true
+      this.msg1 = 'first, rename this new group.'
     }
     
   } // end initStuff
@@ -129,6 +143,7 @@ this.setPopState() //billy learn and fix back button
 
     if(this.subsetIn == 'NewGroupName1') {
       el.select() //  select all text. needs a delay to work.
+      this.radioButsDisabledYn = true
     }
   } // end setCursorOnhtmlIdSubsetInput
 
@@ -138,7 +153,6 @@ this.setPopState() //billy learn and fix back button
       document.getElementById('htmlIdSubsetInput') as HTMLInputElement
     el.classList.remove('is-info')
     el.classList.add('has-background-info-light')
-
     this.ruleChkBlur()
   } // end subsetFocused
 
@@ -148,12 +162,13 @@ this.setPopState() //billy learn and fix back button
       document.getElementById('htmlIdSubsetInput') as HTMLInputElement
     elId.classList.add('is-info')
     elId.classList.remove('has-background-info-light')
-
   } // end subsetBlurred
 
   subsetChanged(ev){
     // he typed a new name for renaming a group 
     console.log('running subsetChanged')
+    this.msg1 = 'subset renamed.'
+
     let subsetWas = this.subsetIn
     this.subsetIn = ev.target.value
     if (subsetWas == 'NewGroupName1'){
@@ -166,10 +181,10 @@ this.setPopState() //billy learn and fix back button
       this.changeRulesForThisGroupToNewGroupName(subsetWas)
       this.changeQuestionsForThisGroupToNewGroupName(subsetWas)
     }
+    this.radioButsDisabledYn = false //was disabled to force him to rename subset
   } // end subsetChanged
 
   newRuleClick(){ 
-    //alert('runnning newRuleClick')
     // alert('running newRuleClick in qncwwg.' + "\r\n"
     // + ' creates a new rule, let him fill it in.'+ "\r\n"
     // + ' enables a SAVE button.'+ "\r\n"
@@ -182,32 +197,46 @@ this.setPopState() //billy learn and fix back button
     this.setNewAccumName()
     this.rulesIn.push(
       { 'cust': '1'
-       ,'qid' : '1'
+       ,'qid' : '2'
        ,"subset" : this.subsetIn
        ,"accum" :  this.newAccumName
        ,"oper" : ">"
        ,"thresh" : 0
       }
     )
-    let rx = this.rulesIn.length-1
-    this.rulesArrayThisGroup.push(this.rulesIn[rx])
-    rx = this.rulesArrayThisGroup.length-1
-    //if (rx>0){this.ruleRowHead='and rule:'} 
-    this.setRuleRowForEditWithDelay(rx) // hack to force delay
+    this.rx = this.rulesIn.length - 1
+    console.log('--------------------rx: ', this.rx)
+    this.buildRuleObj()
+    this.launchQtWriteRule()
+    this.rulesArrayThisGroup.push(this.rulesIn[this.rx])
+    let tx = this.rulesArrayThisGroup.length - 1
+    this.setRuleRowForEditWithDelay(tx) // hack to force delay
   }  // end newRuleClick
   
-  setNewAccumName(){
+  setNewAccumName666(){
     for (let i = 0; i < this.rulesArrayThisGroup.length; i++) { 
       if(this.rulesArrayThisGroup[i].subset == this.subsetIn
       && this.rulesArrayThisGroup[i].accum ==  this.newAccumName) 
       {  
-         let cci = parseInt(this.newAccumName.substring(8, 11)) + 1
+         let cci = parseInt(this.newAccumName.substring(12, 13)) + 1
          let ccs = '0' + cci.toString()
-         this.newAccumName = 'newAccum' + ccs }
+         this.newAccumName = 'newScoreboard' + ccs }
     }
-  } // end setNewAccumName
+  } // end setNewAccumName666 
 
-  ruleClick(r,rx){
+
+  //===
+  setNewAccumName(){
+    let tx = this.rulesArrayThisGroup
+    .findIndex(r => r.subset == this.subsetIn 
+                 && r.accum == this.newAccumName)
+    let cci = parseInt(this.newAccumName.substring(14, 15)) + 1
+    let ccs = '0' + cci.toString()
+    this.newAccumName = 'newScoreboard' + ccs 
+  } // end setNewAccumName
+  //===
+
+  ruleClick(r,tx){
     //console.log('running ruleClick')
     this.ruleChkBlur()
     //accum is like a key to the rule rec.
@@ -222,20 +251,31 @@ this.setPopState() //billy learn and fix back button
     if (typeof(r) == 'string') {
       this.hisChosenRule = 'new'
     }
-    //this.heWantsToWorkOnRule = true
-    this.setRuleRowForEdit(rx)
+    this.setRuleRowForEdit(tx)
   } // end ruleClick
 
-  ruleSaveClick(rx){
-    console.log('hey lets save the rule rec from array to db')
+  ruleSaveClick(txParmIn){
+    console.log('running ruleSaveClick, tx is:',txParmIn)
     // after successful save (.then) we want to show the checkmark:
-    let elId = 'saveCheckMark' + rx
+    let elId = 'saveCheckMark' + txParmIn
     let el = document.getElementById(elId) as HTMLInputElement
     if (el) {  el.classList.remove("is-invisible") }
     this.newRuleButDisabledYn = false
-    this.setRuleRowForNoEdit(rx)
+    this.setRuleRowForNoEdit(txParmIn)
     //alert()
   } // end ruleSaveClick
+
+  ruleSaveToArrays(){
+    // billy, save is done elsewhere?
+
+  }
+
+  ruleSaveToDb(){
+    this.rx = 666
+    this.buildRuleObj()
+    this.launchQtWriteRule()
+
+  }
 
   ruleChkBlur(){
     // get here when ya click something.
@@ -249,19 +289,24 @@ this.setPopState() //billy learn and fix back button
     this.ruleRowThatWasBlurred = -1
   } // end ruleChkBlur
 
-  ruleDeleteClick(rx){
-    //alert('hey lets delete the rule rec from array & db')
-
+  ruleDeleteClick(txParmIn){
+    console.log('running ruleDeleteClick')
     this.ruleChkBlur()
-    let accumThisGroup = this.rulesArrayThisGroup[rx].accum
-    this.rulesArrayThisGroup.splice(rx,1) //delete rule from rulesArrayThisGroup
+    let accumThisGroup = this.rulesArrayThisGroup[txParmIn].accum
+    this.rulesArrayThisGroup.splice(txParmIn,1) //delete rule from rulesArrayThisGroup
     for (let i = 0; i < this.rulesIn.length; i++) { 
       if(this.rulesIn[i].subset == this.subsetIn
       && this.rulesIn[i].accum == accumThisGroup) 
       { 
+        // delete rule from db:
+        // billy launchQtDeleteRule fails on fetch? 
+        this.rx = i
+        this.buildRuleObj()
+        this.launchQtDeleteRule(Event)
+        //
         this.rulesIn.splice(i,1) //delete rule from rulesIn
       } //end if
-
+  
     } // end for
     this.newRuleButDisabledYn = false
     this.ruleCountCheck()
@@ -498,7 +543,6 @@ this.setPopState() //billy learn and fix back button
     this.ruleRowThatWasBlurred = rx
   } // end ruleBlur
 
-
    setRuleRowForNoEdit(rx){
     console.log('running setRuleRowForNoEdit')
     // make it look like the rule row is not editable.
@@ -550,9 +594,9 @@ this.setPopState() //billy learn and fix back button
   } // end threshChange
 
   updateRulesIn(oldAccum,newAccum,rx){
-     //alert('running updateRule '+ oldAccum)
-     //alert(this.rulesIn[0].accum) // why is this the new value?
-     for (let i = 0; i < this.rulesIn.length; i++) { 
+    console.log('runnnnnnnnnnnning updateRulesIn')
+    this.deleteOldRuleAddNewRule(oldAccum,newAccum)  // work with db
+    for (let i = 0; i < this.rulesIn.length; i++) { 
       if(this.rulesIn[i].subset == this.subsetIn
       && this.rulesIn[i].accum == oldAccum) 
         { 
@@ -562,13 +606,80 @@ this.setPopState() //billy learn and fix back button
           this.rulesIn[i].thresh = this.rulesArrayThisGroup[rx].thresh
           this.rulesIn[i].oper = this.rulesArrayThisGroup[rx].oper
         } //end if
-     } // end for
+    } // end for
   }  // end updateRulesIn
+
+  deleteOldRuleAddNewRule(oldAccum,newAccum){
+    this.rx = this.rulesIn
+    .findIndex(r => r.subset == this.subsetIn && r.accum == oldAccum)
+    console.log('running deleteOldRuleAddNewRule--- old rx: ', this.rx)
+    // billy get organized on what rx means at various times.
+    // rx should be the rulesIn index, 
+    // rt should be the rulesArrayThisGroup index
+    this.buildRuleObj()
+    this.launchQtDeleteRule(Event)
+    // insert into db for newAccum:
+    this.rx = this.rulesIn
+    .findIndex(r => r.subset == this.subsetIn && r.accum == newAccum)
+    console.log('running deleteOldRuleAddNewRule--- new rx: ', this.rx)
+    this.buildRuleObj()
+    this.launchQtWriteRule() 
+  }
+
+  jumpToWwq(){
+    //this.subsetOut.emit(subset)
+    //this.subsetsOut.emit(this.subsetArray)
+    this.wwqJumpOut.emit()
+  }
 
   doneWwg(){
     console.log('doneWwg')
     this.doneQncWwgOut.emit()
     this.rulesQncWwgOut.emit(this.rulesIn)
   } // end doneWwg
+
+  buildRuleObj(){
+    this.ruleObj = 
+    {
+      cust: this.cust,
+      qid: this.qid,
+      subset: this.rulesIn[this.rx].subset,
+      accum: this.rulesIn[this.rx].accum,
+      oper: this.rulesIn[this.rx].oper,
+      thresh: this.rulesIn[this.rx].thresh
+    }
+    console.table(this.ruleObj)
+  }
+
+launchQtWriteRule = () => {
+  console.log('running launchQtWriteRule')
+  api.qtWriteRule(this.ruleObj)
+  .then 
+      (   (qtDbRtnObj) => 
+        {
+          console.log(' running .then of api.qtWriteRule') 
+          // this.buildRulesArray(qtDbRtnObj) 
+        }
+      )
+      .catch(() => {  // api.qtWriteRule returned an error 
+        console.log('api.qtWriteRule error.' )
+      })
+} //end LaunchQtWriteRule
+
+launchQtDeleteRule = (ev) => {
+  console.log('running launchQtDeleteRule')
+  api.qtDeleteRule(this.ruleObj)
+  .then 
+      (   (qtDbRtnObj) => 
+        {
+          console.log(' running .then of api.launchQtDeleteRule') 
+          // this.buildRulesArray(qtDbRtnObj) 
+        }
+      )
+      .catch((ev) => {  // api.qtWriteRule returned an error 
+        console.log('api.launchQtDeleteRule error.' + ev)
+      })
+} //end LaunchQtWriteRule
+
 
 } // end export class

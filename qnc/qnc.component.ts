@@ -1,6 +1,6 @@
-import { isNull } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, Input, 
-  EventEmitter, Output } from '@angular/core'
+//import { isNull } from '@angular/compiler/src/output/output_ast';
+import {Component, OnInit, Input, Output} from '@angular/core'
+import {EventEmitter} from '@angular/core'
 
 @Component({
   selector: 'app-qnc',
@@ -31,9 +31,6 @@ export class QncComponent implements OnInit {
   expandedSubsetHtmlId = '?'
   
   ngOnInit() {
-  // this.initSubsets()
-  // this.initQuestions()
-  // this.initRules() 
   console.log('running ngOnit qnc comp')
   window.history.pushState(this.state, null, "")
   this.subsetArray = this.subsetsIn

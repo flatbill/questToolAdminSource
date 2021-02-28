@@ -1,9 +1,8 @@
 <section >
   <div class='is-fullwidth has-background-warning is-size-5'> 
-     Question Groups  
+    &nbsp; Question Groups qnc   
      <span class='is-size-7'>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      qnc.component.html
      </span>
 
     <span class='button has-background-warning is-small is-pulled-right mb-6'
@@ -50,7 +49,7 @@
      </div>
      <div class='column'>
        <button class='button has-background-link'
-           (click)='subsetClick("NewGroupName",0)'  >
+           (click)='subsetClick("NewGroupName1",0)'  >
           <span class='is-size-4y'> new group  &#10133; &#9997;   </span>
        </button>
 
@@ -59,7 +58,49 @@
 </section>
 
 <br><br>
-<div>
-  hisChosenSubset: {{hisChosenSubset}} hisChosenQuest: {{hisChosenQuest}}
-</div>
 
+<!-- <div>
+  hisChosenSubset: {{hisChosenSubset}} hisChosenQuest: {{hisChosenQuest}}
+</div> -->
+
+<textarea name="" id="" cols="50" rows="20">
+1 sign on as admin
+2 see main menu
+3 choose test setup or test results
+4 test setup (admin) questions,groups,rules
+5 test results (download page) test takers, dnload answers,scores
+
+todo
+1 make wwqd a slave to wwq.  filter should be only thru wwq.
+2 add filtering to all wwq columns.
+3 change filter icon depending on whether filter is on/off for that col.
+4 if filt on, and filt icon clicked, toggle this col filt off.
+5 new rules screen, make it look like wwqd.
+6 kill off old qnc.  nice try i guess.
+
+question list.
+question detail.
+group (subset) list.
+group (subset detail.
+rules list.  
+rule detail.
+ 
+questions ----------------------
+feb 28 almost ready.
+
+rules ----------------------
+count questions that feed it,
+show the rule (like accum1 > 0)
+show group that this rule will trigger
+
+groups ----------------------
+not many fields.
+subset order is important. influence qNa session,
+cuz we ask all questions in-a-subset together.
+
+lists a grid with filter criteria, but
+has no rec or field edit-ability.
+detail: a one-record edit screen, with prev next.
+detail screen can only work on one record.
+                           
+</textarea>

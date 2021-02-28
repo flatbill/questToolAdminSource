@@ -1,8 +1,7 @@
 <div class='is-fullwidth has-background-warning is-size-5'>
-    Question Detail: {{questionsIn[qx].questNbr}}
+    &nbsp; Question Detail: {{questionsIn[qx].questNbr}}
     <span class='has-text-weight-bold'> 
-       {{questionsIn[qx].questTxt}} </span>
-     
+       {{questionsIn[qx].questTxt}} </span> &nbsp;&nbsp; 
   <a class='button has-background-warning is-small is-pulled-right '
     (click)='doneWwqd()'>
      done &#10060; 
@@ -12,6 +11,12 @@
   (click)='showHideHelp()'>
    help &#10068; 
  </a>
+<span class='is-pulled-right'>&nbsp;</span>
+
+ <span class='tag is-pulled-right is-dark is-small is-vcentered' 
+       *ngIf='msg1.length > 0'>
+  {{msg1}} </span> 
+
 </div>
 <div>
   <span class='button is-info'
@@ -20,9 +25,9 @@
   <span class='button is-info'
       (click)='nextButClick()'
   > next &#5171;  </span> &nbsp;
-  <span class='button is-info'
+  <!-- <span class='button is-info'
   (click)='filtButClick()'
-> Filter Group: {{filterBySubset}}  </span> &nbsp;
+> Filter Group: {{filterBySubset}}  </span> &nbsp; -->
   <span class='button is-info'
      (click)='addButClick()'
   > add  </span> &nbsp;
@@ -47,7 +52,7 @@
       autocomplete="off"></td>
   </tr>
   <tr>
-<td><label>sequence: </label></td>
+<td><label>Sequence: </label></td>
 <td><input  
   class='input is-small '
   value= {{questionsIn[qx].questSeq}}
@@ -55,16 +60,6 @@
   (change)=questSeqChg($event,qx)              
   autocomplete="off"></td>
   </tr>
-  <tr>
-  <td><label>group: </label></td>
-  <td><input  
-    class='input is-small '
-  value= {{questionsIn[qx].subset}}
-  size="20"
-  (change)=subsetChg($event,qx)              
-  autocomplete="off"> </td>
-  </tr>
-
   <tr>
   <td><label>pre-Question: </label></td>
   <td><input  
@@ -83,8 +78,26 @@
     (change)=questTxtChg($event,qx)              
     autocomplete="off"> </td>
   </tr>
-  <tr>&nbsp;</tr>
- 
+  
+  <tr>
+    <td><label>Group: </label></td>
+    <td><input  
+       type='text'
+      class='input is-small '
+      value= {{questionsIn[qx].subset}}
+       size="20"
+        (change)='subsetChg($event,qx)'            
+    autocomplete='off'> </td>
+    </tr>
+    <tr *ngIf='fullRuleWords.length > 0'>
+      <td><label>relies on Scoreboard: </label></td>
+      <td><input disabled 
+        class='input is-small '
+        value= {{fullRuleWords}}
+         size="20">
+      </td>
+    </tr>
+    <!-- <tr>&nbsp;</tr> -->
 </table>
 
 <!-- <table class=' table has-background-success-light is-narrow'>
@@ -105,7 +118,7 @@
 
 <table class=' table has-background-success-light is-narrow'>
   <thead>
-    <th>ScoreBoard:</th>
+    <th>answer adds to ScoreBoard:</th>
     <th><input  
       class='input is-small'
       value= {{questionsIn[qx].accum[0]}}
@@ -114,8 +127,12 @@
       autocomplete="off"> </th>
     
     <tr>
-      <th>Choice</th>
+      <th>Answer Choice</th>
       <th>Points</th>
+      <th><button 
+        class='button is-info is-small'
+        (click)='addAnswerChoice()'  >
+        add</button></th>
     </tr>
   </thead>
   <tbody>
@@ -129,15 +146,30 @@
   autocomplete="off"> 
 </td>  
   <td>
-  <input  
+  <input  type="number"
   class='input is-small '
   value= {{questionsIn[qx].acaPointVals[ax]}}
   size="2"
   (change)=questAcaPointValChg($event,qx,ax)              
   autocomplete="off"> 
 </td>
+<td><button 
+  class='button is-info is-small'
+  (click)='delAnswerChoice(ax)'>
+  delete</button></td>
 </tr>
   
   </tbody>
 </table>
 </div>
+
+<!-- <button class='button is-info is-rounded is-small'>a</button>
+&#9644;&#9644;&#9644;&#9644;
+<button class='button is-info is-rounded is-small'>b</button>
+&#9644;&#9644;&#9644;&#9644;
+<button class='button is-info is-rounded is-small'>c</button>
+&#9620;&#9620;&#9620;&#9596;&#9596;&#9596;
+&#8866;&#8866;&#8866;
+<button class='button is-primary is-rounded is-small'>1</button> -->
+<br><br>
+<span id='htmlIdBottomOfPage'> </span>
