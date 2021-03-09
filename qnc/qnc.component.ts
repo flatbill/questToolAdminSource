@@ -15,7 +15,10 @@ export class QncComponent implements OnInit {
   @Output() subsetsOut = new EventEmitter()
   @Output() wwgJumpOut = new EventEmitter()
   @Output() wwqJumpOut = new EventEmitter()
+  @Output() wwrJumpOut = new EventEmitter()
+  @Output() wwiJumpOut = new EventEmitter()
   @Output() wwqdJumpOut = new EventEmitter()
+  @Output() wwuJumpOut  = new EventEmitter()
   @Output() qncQuestOut = new EventEmitter()
   state = { wingoFango: false }
   subsetArray = []
@@ -39,7 +42,7 @@ export class QncComponent implements OnInit {
 
   subsetTagClick(s,sx){
     console.log('running subsetTagClick',s,sx)
-    this.jumpToWwg(s)
+    this.jumpToWwg()
   } // end subsetClick
 
   subsetClick(s,sx){
@@ -79,36 +82,34 @@ export class QncComponent implements OnInit {
     this.expandedSubsetHtmlId = buildHtmlId
     if (  s == 'NewGroupName1' ){
       //lets jump to qncWwg for his clicked on subset
-      this.jumpToWwg(s)}
+      this.jumpToWwg()}
     this.saveSubsetHtmlId = buildHtmlId //remember for later
     console.log('saving html id',this.saveSubsetHtmlId)
   }
 
-  questClick(q,s){
-    console.log('running qnc questClick:', q, s)
-    this.hisChosenQuest = q
-    this.jumpToWwqd(q,s)
-  } // endquestClick
+  // questClick(q,s){
+  //   console.log('running qnc questClick:', q, s)
+  //   this.hisChosenQuest = q
+  //   this.jumpToWwqd(q,s)
+  // } // endquestClick
 
   questTagClick(q,s){
     console.log('running questTagClick')
-    this.jumpToQuestions(q,s)
+    this.jumpToWwq()
   }
   
-  jumpToWwg(subset){
-    // user wants to jump to Wwg work-with-group
-    console.log('running qnc jumpToWwg with: ',subset)
-    this.subsetOut.emit(subset)
-    this.subsetsOut.emit(this.subsetArray)
-    this.wwgJumpOut.emit()
-  } // end jumpToWwg
+  jumpToWwg(){ this.wwgJumpOut.emit()}  
+  jumpToWwq(){ this.wwqJumpOut.emit()} 
+  jumpToWwr(){ this.wwrJumpOut.emit()} 
+  jumpToWwi(){ this.wwiJumpOut.emit()} 
+  jumpToWwu(){ this.wwuJumpOut.emit()} 
 
-  jumpToWwqd(q,s){
-    // user wants to  work on one question
-    console.log('running qnc jumpToWwqd with: ',q)
-    this.qncQuestOut.emit(q)
-    this.wwqdJumpOut.emit()
-  }
+  // jumpToWwqd(q,s){
+  //   // user wants to  work on one question
+  //   console.log('running qnc jumpToWwqd with: ',q)
+  //   this.qncQuestOut.emit(q)
+  //   this.wwqdJumpOut.emit()
+  // }
 
   jumpToQuestions(q,s){
     console.log('running jumpToQuestions in qnc comp')
@@ -125,6 +126,10 @@ export class QncComponent implements OnInit {
     +' click on the new group icon ( add a new group, go to work-with-group)....'+ "\r\n"
     +' click a question -> jump to wwqd question detail?'
     )
+  }
+
+  navClick(n){
+    console.log('running navClick ' + n)
   }
 
 } //end qnc component class

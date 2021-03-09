@@ -1,9 +1,10 @@
-<div class='is-fullwidth has-background-warning is-size-5'>
-    &nbsp; Question Detail: {{questionsIn[qx].questNbr}}
-    <span class='has-text-weight-bold'> 
+<div class='is-fullwidth has-background-warning is-size-5 selz-text-trunc'>
+    <span>&nbsp; Question Detail: {{questionsIn[qx].questNbr}} </span>
+    <span class='has-text-weight-bold '> 
        {{questionsIn[qx].questTxt}} </span> &nbsp;&nbsp; 
+
   <a class='button has-background-warning is-small is-pulled-right '
-    (click)='doneWwqd()'>
+    (click)='jumpToWwq()'>
      done &#10060; 
   </a>  
 

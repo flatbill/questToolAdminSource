@@ -1,22 +1,32 @@
-<div class='is-fullwidth has-background-warning is-size-5'>
-    &nbsp; Questions wwq
+<div class='is-fullwidth has-background-warning is-size-5 pt-1 pb-1' >
+    &nbsp; Work with Questions    wwq
 
-     
+    &nbsp;&nbsp;
+    <span  (click)='rq()'  
+             class='tag is-small is-info is-clickable' >
+    reset filter  </span>
+
    <a class='button has-background-warning is-small is-pulled-right '
-    (click)='doneWwq()'>
+    (click)='jumpToQnc()'>
      done &#10060; 
    </a>  
 
    <a class='button has-background-warning is-small is-pulled-right '
-  (click)='showHideHelp()'>
-   help &#10068; &nbsp;
-   </a>
+      (click)='showHideHelp()'>
+       help &#10068; 
+   </a> 
 
-   <button (click)='rq()'  
-     class='button is-small is-info is-pulled-right' >
-     reset questions</button>
+   <span class='is-pulled-right'> &nbsp;
+    <span class='tag is-small is-info is-clickable '  
+           (click)='jumpToWwg()'> groups  </span>  &nbsp; 
+   </span> 
+
+   <span class='is-pulled-right'> &nbsp;
+     <span class='tag is-small is-info is-clickable '  
+         (click)='jumpToWwr()'> rules </span>  &nbsp;  
+   </span>
      
-  <span class='is-pulled-right'>
+  <span class=' is-pulled-right'>
     <span class='tag is-dark is-small is-vcentered' 
       *ngIf='msg1.length > 0'>
       {{msg1}} 
@@ -24,78 +34,83 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  </span>
 
+ <!-- <div class='mb-1'> ...&nbsp;</div> -->
 </div>
 
-
   <table class='table is-fullwidth'>
-    <thead><tr>
+    <thead >
+
+      <tr>
       <th class='is-clickable' 
-        (click)="colHeadClicked('nbr')" > Nbr <br>  
-        <span *ngIf='colHeadSf'> 
-          <span (click)="colSort('questNbr','des')"> {{symArDn}} </span> 
-          <span (click)="colSort('questNbr','asc')"> {{symArUp}} </span> 
-          <span (click)="colFilt('questNbr','Nbr')" > {{symFilt}} </span> 
-        </span> 
+        (click)="colHeadClicked('nbr')" >
+        <span>Number</span>  
+        <div *ngIf='colHeadSf'> 
+          <span class='tag' (click)="colSort('questNbr','des')"> {{symArDn}} </span> 
+          <span class='tag' (click)="colSort('questNbr','asc')"> {{symArUp}} </span> 
+          <span class='tag' (click)="colFilt('questNbr','Nbr')" > {{symFilt}} </span>
+        </div> 
       </th>
 
     <th class='is-clickable'
-      (click)="colHeadClicked('seq')" > Seq  <br>
-        <span *ngIf='colHeadSf'> 
-          <span (click)="colSort('questSeq','des')"> {{symArDn}} </span> 
-          <span (click)="colSort('questSeq','asc')"> {{symArUp}} </span> 
-          <span (click)="colFilt('questSeq','Sequence')"  > {{symFilt}} </span> 
-        </span> 
+      (click)="colHeadClicked('seq')" > 
+      Sequence 
+        <div *ngIf='colHeadSf'> 
+          <span class='tag' (click)="colSort('questSeq','des')"> {{symArDn}} </span> 
+          <span class='tag' (click)="colSort('questSeq','asc')"> {{symArUp}} </span> 
+          <span class='tag' (click)="colFilt('questSeq','Sequence')"  > {{symFilt}} </span> 
+        </div> 
     </th>
 
       <th class='is-clickable'
         (click)="colHeadClicked('grp')" >
-        
-        Group  <br>
-        <div><button (click)='jumpToGroup()'>groupie</button></div>
-        <span *ngIf='colHeadSf'> 
-          <span (click)="colSort('subset','des')"> {{symArDn}} </span> 
-          <span (click)="colSort('subset','asc')"> {{symArUp}} </span> 
-          <span (click)="colFilt('subset','Group')"  > {{symFilt}} </span> 
-        </span> 
+        Group
+        <div *ngIf='colHeadSf'> 
+          <span class='tag' (click)="colSort('subset','des')"> {{symArDn}} </span> 
+          <span class='tag' (click)="colSort('subset','asc')"> {{symArUp}} </span> 
+          <span class='tag' (click)="colFilt('subset','Group')"  > {{symFilt}} </span> 
+        </div> 
       </th> 
       
       <th class='is-clickable'
-        (click)="colHeadClicked('pre')" >Pre Question <br>
-        <span *ngIf='colHeadSf'> 
-          <span (click)="colSort('preQuest','des')"> {{symArDn}} </span> 
-          <span (click)="colSort('preQuest','asc')"> {{symArUp}} </span> 
-          <span (click)="colFilt('preQuest','Pre-Quest')" > {{symFilt}} </span> 
-        </span> 
+        (click)="colHeadClicked('pre')" >
+        Pre Question <br>
+        <div *ngIf='colHeadSf'> 
+          <span class='tag' (click)="colSort('preQuest','des')"> {{symArDn}} </span> 
+          <span class='tag' (click)="colSort('preQuest','asc')"> {{symArUp}} </span> 
+          <span class='tag' (click)="colFilt('preQuest','Pre-Quest')" > {{symFilt}} </span> 
+        </div> 
       </th>
 
       <th class='is-clickable'
-        (click)="colHeadClicked('qTxt')" >Question <br>
-        <span *ngIf='colHeadSf'> 
-          <span (click)="colSort('questTxt','des')"> {{symArDn}} </span> 
-          <span (click)="colSort('questTxt','asc')"> {{symArUp}} </span> 
-          <span (click)="colFilt('questTxt','Question Text')" > {{symFilt}} </span> 
-        </span> 
+        (click)="colHeadClicked('qTxt')" >
+                Question
+        <div *ngIf='colHeadSf'> 
+          <span class='tag' (click)="colSort('questTxt','des')"> {{symArDn}} </span> 
+          <span class='tag' (click)="colSort('questTxt','asc')"> {{symArUp}} </span> 
+          <span class='tag' (click)="colFilt('questTxt','Question Text')" > {{symFilt}} </span> 
+        </div> 
       </th>
 
       <th class='is-clickable' 
-        (click)="colHeadClicked('accum')" >Add to Scoreboard <br>
-        <div><button (click)='jumpToRules()'>rules</button></div>
-
-        <span *ngIf='colHeadSf'> 
-          <span (click)="colSort('accum','des')"> {{symArDn}} </span> 
-          <span (click)="colSort('accum','asc')"> {{symArUp}} </span> 
-          <span (click)="colFilt('accum','Scoreboard')"  > {{symFilt}} </span> 
-        </span> 
+        (click)="colHeadClicked('accum')" >
+         Scoreboard
+        <div *ngIf='colHeadSf'> 
+          <span class='tag' (click)="colSort('accum','des')"> {{symArDn}} </span> 
+          <span class='tag' (click)="colSort('accum','asc')"> {{symArUp}} </span> 
+          <span class='tag' (click)="colFilt('accum','Scoreboard')"  > {{symFilt}} </span> 
+        </div> 
 
       </th>
-    </tr></thead>
+      <th>  </th><th>  </th><th> </th> 
+
+    </tr>
+    </thead>
     <tbody class=none>
         <tr *ngFor='let q of questArray2, index as qx'
              class='has-background-success' 
         >        
-        <!-- <td><input disabled value={{q.questNbr}} size="3"></td>  -->
-        <td > {{q.questNbr}} </td> 
-        <td> {{q.questSeq}}  </td> 
+        <td class='pl-5 pr-5'  > {{q.questNbr}}  </td> 
+        <td class='pl-5 pr-5'  > {{q.questSeq}}  </td> 
         <td> {{q.subset}}    </td> 
         <td> {{q.preQuest}}  </td> 
         <td> {{q.questTxt}}  </td> 
@@ -105,7 +120,7 @@
         <td>
         <button class='button is-small is-info' 
           (click)=detailButClicked(q.questNbr)> 
-          Details 
+          details 
         </button>
 
         </td>

@@ -7,18 +7,21 @@ import api from 'src/utils/api'
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.key === "Escape") {
-        this.escKeyWasHit()
-    }
-  }
-
+  @HostListener('document:keydown', ['$event']) 
+    onKeydownHandler(event: KeyboardEvent) {
+      if (event.key === "Escape") { this.escKeyWasHit() }
+    } // end onKeydownHandler
   title = 'Questool Admin'
-  showQnc = false 
+  showQnc = true  
+  showQncWwq = false
+  showQncWwqd = false
   showQncWwg = false
-  showQncWwq = true
-  showQncWwqd = false 
+  showQncWwgd = false
+  showQncWwr = false  
+  showQncWwrd = false 
+  showQncWwi = false
+  showQncWwu = false
+
   showQncConv = false // set this true for ed338 conv
   showAppComponent = false // set this true for debugging
   subsetArray = ['nothing','yet']
@@ -39,6 +42,7 @@ export class AppComponent {
   qid = '2' // billy fix, set from url
   cust = '1'
   accumObj = {}
+
   ngOnInit()  {
     this.initSubsets()
     this.initRules()
@@ -77,8 +81,7 @@ export class AppComponent {
     ]
   } //end initRules
 
-
- initQuestions(){
+  initQuestions(){
   //this.launchReadAllDbTables() 
   // temp disable to reduce fauna db usage
   this.questArray = //billy temp reduce db usage
@@ -202,50 +205,64 @@ export class AppComponent {
     ]
   this.questArray2 = this.questArray
   //console.table(this.questArray)
-} //end initQuestions
-
+  } //end initQuestions
   showQncFun(){
-    console.log('running app showQncFun')
-      this.showQnc = true
-      this.showQncWwg = false
-      this.showQncWwq = false 
-      this.showQncWwqd = false 
-  } // end showQncFun
-
-  
-  showWwgFun(){
-    console.log('running app showWwgFun')
-    this.showQnc = false
-    this.showQncWwg = true
-    this.showQncWwq = false
-    this.showQncWwqd = false 
-  } 
-  
-  doneWwqdFun(){
-    console.log('running app doneWwqdFun')
-    // returning from wwqd.
-    // either show qnc or wwq
-    // depending on who called wwqd earlier
-    console.log('wwqdCaller: ',this.wwqdCaller)
-    if(this.wwqdCaller=='qnc') { this.showQncFun() }
-    if(this.wwqdCaller=='wwq') { this.showWwqFun() }
-
-    
-  }
-
+    this.setAllShowCompFalse()
+    this.showQnc = true
+  } //end showQncFun
   showWwqFun(){
-    // alert('running app showWwqFun')
-    // console.table(this.questArray2)
-    // alert('239 see console.table for quest array2')
-    // console.log('running app showWwqFun')
     this.questionsQncWwq = this.questArray 
     this.questions2QncWwq = this.questArray2
     this.subsetQncWwq = this.subset 
-    this.showQnc = false
-    this.showQncWwg = false
+    this.setAllShowCompFalse()
     this.showQncWwq = true
-    this.showQncWwqd = false 
   } // end showWwqFun
+  showWwqdFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwqd = true 
+  } // end showWwqdFun
+  showWwgFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwg = true
+  } // end showWwgFun
+  showWwgdFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwgd = true 
+  } // end showWwgdFun
+
+  showWwrFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwr = true
+  } // end showWwrFun
+
+  showWwrdFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwrd = true
+  } 
+  
+  showWwiFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwi = true
+  } 
+  showWwuFun(){
+    this.setAllShowCompFalse()
+    this.showQncWwu = true 
+  } 
+  setAllShowCompFalse(){
+    this.showQnc    = false
+    this.showQncWwg = false
+    this.showQncWwgd = false
+    this.showQncWwq = false
+    this.showQncWwqd = false
+    this.showQncWwr = false
+    this.showQncWwrd = false
+    this.showQncWwi = false
+    this.showQncWwu = false
+    this.showQncConv = false
+  }
+
+  //   if(this.wwqdCaller=='qnc') { this.showQncFun() }
+  //   if(this.wwqdCaller=='wwq') { this.showWwqFun() }
 
   setQuestFromQncFun(ev){
     console.log('running app setQuestFromQncFun')
@@ -264,15 +281,6 @@ export class AppComponent {
     this.daQuestion = ev
     this.wwqdCaller = 'wwq'
 
-  }
-
-  showWwqdFun(){
-    // console.log('running app showWwqdFun')
-    // console.table(this.questArray2)
-    this.showQnc = false
-    this.showQncWwg = false
-    this.showQncWwq = false
-    this.showQncWwqd = true 
   }
 
   questArrayQncWwqFun(ev){
@@ -404,6 +412,4 @@ buildListOfAccumsFromQuestArray(){
   }
   console.log('done buiding accumArray:',this.accumArray)
 }  // end buildListOfAccumsFromQuestArray
-
-
-}
+} // end export AppComponent

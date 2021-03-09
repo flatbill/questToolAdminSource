@@ -1,8 +1,17 @@
-<section >
   <div class='is-fullwidth has-background-warning is-size-5'> 
-    &nbsp; Question Groups qnc   
-     <span class='is-size-7'>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp; Qnc   Questario
+     <span class='is-size-5 pb-1 pt-1'>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </span>
+
+     <span>
+      <span class='tag is-small is-info m-1 is-clickable'(click)='navClick("sign")' >sign on</span> 
+      <span class='tag is-small is-info m-1 is-clickable'(click)=jumpToWwq()>questions</span> 
+      <span class='tag is-small is-info m-1 is-clickable'(click)=jumpToWwg()>groups</span>  
+      <span class='tag is-small is-info m-1 is-clickable'(click)=jumpToWwr()>rules</span> 
+      <span class='tag is-small is-info m-1 is-clickable'(click)=jumpToWwi()>invitations</span> 
+      <span class='tag is-small is-info m-1 is-clickable'(click)=jumpToWwu()>users</span> 
      </span>
 
     <span class='button has-background-warning is-small is-pulled-right mb-6'
@@ -12,7 +21,7 @@
   </div> 
   
 
-   <div class="columns is-gapless  is-multiliney" >
+   <!-- <div class="columns is-gapless  is-multiliney" >
      <div class='column is-clipped'
        *ngFor="let subsetName of subsetArray; let sx=index"
        id="{{'subsetHtmlId'+sx}}" >
@@ -30,8 +39,8 @@
           <span>  {{subsetName}} &nbsp;  </span>
           <span *ngIf='expandedSubset==subsetName'
               (click)='questTagClick(0,subsetName)' 
-                class=' tag has-background-success is-pulled-right'>
-             Questions <!-- {{qCountArray[sx]}}  -->
+                class='tag has-background-success is-pulled-right'>
+             Questions  
           </span>
         </span>
 
@@ -54,29 +63,59 @@
        </button>
 
      </div>
-   </div>
-</section>
+   </div> -->
 
-<br><br>
-
-<!-- <div>
-  hisChosenSubset: {{hisChosenSubset}} hisChosenQuest: {{hisChosenQuest}}
-</div> -->
+ <div>
+<span class='tag is-dark mr-2'>sign on info... who am i? </span>
+<span class='tag is-dark mr-2'>questions info... questCnt? </span>
+<span class='tag is-dark mr-2'>groups info... groupCnt, QuestCnt ? </span>
+<span class='tag is-dark mr-2'>groups info... groupCnt, QuestCnt ? </span>
+</div>
 
 <textarea name="" id="" cols="50" rows="20">
 1 sign on as admin
-2 see main menu
-3 choose test setup or test results
+2 see main menu qnc
+3 show all nav capabilities (see qnc below)
 4 test setup (admin) questions,groups,rules
 5 test results (download page) test takers, dnload answers,scores
 
 todo
-1 make wwqd a slave to wwq.  filter should be only thru wwq.
-2 add filtering to all wwq columns.
-3 change filter icon depending on whether filter is on/off for that col.
-4 if filt on, and filt icon clicked, toggle this col filt off.
-5 new rules screen, make it look like wwqd.
-6 kill off old qnc.  nice try i guess.
+6 re-purpose old qnc. save old bulma field custom cuteness.
+maybe like a splash screen.
+maybe show sign-on info, welcome, 
+nav buttons for quest list ,group list ,rules list
+nav buttons for invitation maint, user list
+7 intro/break/finish  ? just questions ? 
+8 sign on screen
+9 icode  ed emails a link, link has imbedded icode, 
+  icode must have matching data
+  maybe a fauna table that has 'invitation' info
+  edit screen for invitation info?
+10 navigation between components
+11 new component user list? 
+   see old download screen.
+   has state (how far a user is)
+   has download capability for scores, answers?
+12 jump 
+   maybe make dumb components smart enough to
+   jump back to qnc.
+   forget calling this 'doneWwx'
+   call it jumpToxxx.
+   wwqd always jumps back to wwq
+   wwgd always jumps back to wwg
+   wwrd always jumps back to wwr
+   wwq when done hit, wwq jumps to qnc
+   wwg when done hit, wwg jumps to qnc
+   wwr when done hit, wwr jumps to qnc
+13 sync arrays after user edits on detail screens.
+   when he does crud, 
+     gotta sync up QuestionsIn, RulesIn, SubsetsIn
+     gotta sync up fauna db tables 
+14 questionsIn, rulesIn, SubsetsIn --- same layout as fauna db
+   questArray, RulesArray, SubsetsArray === local shadow copies
+   only pass questionsIn, rulesIn, SubsetsIn when he navigates.
+   create shadow arrays from questionsIn, rulesIn, SubsetsIn 
+      when he navigates.
 
 question list.
 question detail.
@@ -86,21 +125,19 @@ rules list.
 rule detail.
  
 questions ----------------------
-feb 28 almost ready.
-
+ 
 rules ----------------------
-count questions that feed it,
-show the rule (like accum1 > 0)
-show group that this rule will trigger
+ jump to/from wwrd rule detail
+ need to  wwrd workable
 
 groups ----------------------
-not many fields.
-subset order is important. influence qNa session,
-cuz we ask all questions in-a-subset together.
+jump to/from wwgd rule detail
+ need to  wwgd workable
 
-lists a grid with filter criteria, but
-has no rec or field edit-ability.
+
+all lists show a grid. 
+lists have no rec or field edit-ability.
 detail: a one-record edit screen, with prev next.
-detail screen can only work on one record.
+detail: screen can only work on one record.
                            
 </textarea>

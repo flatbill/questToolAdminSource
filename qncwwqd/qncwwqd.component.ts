@@ -13,7 +13,7 @@ export class QncwwqdComponent implements OnInit {
   @Input() questionsIn2 // filtered quest list
   @Input() rulesIn  
   @Input() subsetsIn  
-  @Output() doneQncWwqdOut = new EventEmitter()
+  @Output() wwqJumpOut = new EventEmitter()
   msg1 = 'edit and save question details.'
   qx = -1
   rulesArrayThisSubset = []
@@ -292,10 +292,10 @@ export class QncwwqdComponent implements OnInit {
     // console.table(this.questionsIn[this.qx]) 
   }
 
-  doneWwqd(){
-    console.log('running doneWwqd in wwqd component')
-    this.doneQncWwqdOut.emit()
-  } // end doneWwqd
+  jumpToWwq(){
+    console.log('running jumpToWwq in wwqd component')
+    this.wwqJumpOut.emit()
+  } // end jumpToWwq
 
   showHideHelp(){
     alert('show some help')

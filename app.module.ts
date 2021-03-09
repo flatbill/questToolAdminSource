@@ -7,6 +7,11 @@ import { QncwwgComponent } from './qncwwg/qncwwg.component';
 import { QncwwqComponent } from './qncwwq/qncwwq.component';
 import { QncwwqdComponent } from './qncwwqd/qncwwqd.component';
 import { QncconvComponent } from './qncconv/qncconv.component';
+import { QncwwrComponent } from './qncwwr/qncwwr.component';
+import { QncwwgdComponent } from './qncwwgd/qncwwgd.component';
+import { QncwwrdComponent } from './qncwwrd/qncwwrd.component';
+import { QncwwiComponent } from './qncwwi/qncwwi.component';
+import { QncwwuComponent } from './qncwwu/qncwwu.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +20,12 @@ import { QncconvComponent } from './qncconv/qncconv.component';
     QncwwgComponent,
     QncwwqComponent,
     QncwwqdComponent,
-    QncconvComponent
+    QncconvComponent,
+    QncwwrComponent,
+    QncwwgdComponent,
+    QncwwrdComponent,
+    QncwwiComponent,
+    QncwwuComponent
   ],
   imports: [
     BrowserModule

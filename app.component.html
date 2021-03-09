@@ -16,10 +16,11 @@
   (subsetOut)="subsetFromQncFun($event)"
   (subsetsOut)="ssArrayQncWwgFun($event)"
   (rulesOut)="rulesArrayQncWwgFun($event)"
-  (wwgJumpOut)="showWwgFun($event)"
   (wwqJumpOut)="showWwqFun($event)"
-  (wwqdJumpOut)="showWwqdFun($event)"
-  (qncQuestOut)="setQuestFromQncFun($event)"
+  (wwgJumpOut)="showWwgFun($event)"
+  (wwrJumpOut)="showWwrFun($event)"
+  (wwiJumpOut)="showWwiFun($event)"
+  (wwuJumpOut)="showWwuFun($event)"
   >
 </app-qnc>
 
@@ -28,13 +29,19 @@
    [rulesIn]="rulesArray"
    [subsetIn]="subset"
    [questionsIn]="questArray"
+   [subsetsIn]="subsetArray"
    [meow]="meow"
    [subsetsQncWwg]="subsetsQncWwg"
-   (doneQncWwgOut)="showQncFun($event)"
+   (qncJumpOut)="showQncFun($event)"
    (wwqJumpOut) = "showWwqFun($event)"
+   (wwrJumpOut) = "showWwrFun($event)"
+   (wwgdJumpOut) = "showWwgdFun($event)"
    (rulesQncWwgOut)="foxTrot($event)"
    >
 </app-qncwwg>
+
+<app-qncwwgd *ngIf="showQncWwgd">
+</app-qncwwgd>
 
 <app-qncwwq  *ngIf="showQncWwq" 
   [showQnc]="showQnc"
@@ -44,8 +51,10 @@
   [questionsIn2]="questArray2"
   [rulesIn]="rulesArray"
   (wwqQuestOut)="setQuestFromWwqFun($event)"
-  (doneWwqOut)="showQncFun($event)"
-  (jumpWwqdOut)="showWwqdFun($event)"
+  (qncJumpOut)="showQncFun($event)"
+  (wwqdJumpOut)="showWwqdFun($event)"
+  (wwgJumpOut)="showWwgFun($event)"
+  (wwrJumpOut)="showWwrFun($event)"
   (wwqQuestArray2Out)="setQuest2FromWwqFun($event)"
 > 
 </app-qncwwq>
@@ -56,11 +65,40 @@
   [questionsIn2]="questArray2"
   [rulesIn]="rulesArray"
   [subsetsIn]="subsetArray"
-  (doneQncWwqdOut)="doneWwqdFun($event)"
+  (wwqJumpOut)="showWwqFun($event)"
 >
 </app-qncwwqd>
 
+
+<app-qncwwr *ngIf="showQncWwr" 
+  [questionsIn]="questArray"
+  [rulesIn]="rulesArray"
+  [subsetsIn]="subsetArray"
+  (qncJumpOut) = "showQncFun($event)"
+  (wwqJumpOut) = "showWwqFun($event)"
+  (wwgJumpOut) = "showWwgFun($event)"
+  (wwrdJumpOut) = "showWwrdFun($event)"
+>
+</app-qncwwr>
+
+<app-qncwwrd *ngIf="showQncWwrd" 
+  [rulesIn]="rulesArray"
+  (wwrJumpOut) = "showWwrFun($event)"
+>
+</app-qncwwrd>
+
+<app-qncwwi *ngIf="showQncWwi" 
+  (qncJumpOut) = "showQncFun($event)"
+>
+</app-qncwwi>
+
+<app-qncwwu *ngIf="showQncWwu" 
+  (qncJumpOut) = "showQncFun($event)"
+>
+</app-qncwwu>
+
 <app-qncconv *ngIf="showQncConv" >
 </app-qncconv>
+
 
 </div>

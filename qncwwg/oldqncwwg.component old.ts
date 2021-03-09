@@ -16,13 +16,12 @@ export class QncwwgComponent implements OnInit {
   @Input() rulesIn  
   @Input() subsetIn
   @Input() questionsIn
-  @Input() subsetsIn
   @Output() qncJumpOut = new EventEmitter()
   @Output() rulesQncWwgOut = new EventEmitter() 
   @Output() wwqJumpOut = new EventEmitter() 
   @Output() wwrJumpOut = new EventEmitter() 
   @Output() wwgdJumpOut = new EventEmitter() 
-  msg1 = 'list of Groups shown.'
+  msg1 = 'add or delete rules for this group.'
   hisChosenRule = '?-?'
   anyRulesYes = false // tied to radio button
   anyRulesNo = true // tied to radio button
@@ -52,23 +51,14 @@ export class QncwwgComponent implements OnInit {
   //
   // billy, fix the back button somehow.
   //but27 = document.querySelector("button")
-  subsetArray = []
   ngOnInit() {
-    this.buildSubsetArrayFromSubsetsIn()
-    this.countQuestionsPerGroup()
+    //alert('just starting wwg')
+    // console.log('rulesIn at ngInit:')
+    // console.table(this.rulesIn)
+    // console.log('subsetIn at ngInit:',this.subsetIn)
     this.initStuff()
+    //this.setCursorOnhtmlIdSubsetInput()
   } // end ngOnInit
-
-  buildSubsetArrayFromSubsetsIn(){
-    for( let i=0;i<this.subsetsIn.length-1;i++){
-      this.subsetArray.push(
-        { "subset" : this.subsetsIn[i]
-         ,"qCount" :  0
-        }
-      )
-  
-    }
-  }
 
   initStuff(){
     //console.log('running initStuff')
@@ -96,12 +86,12 @@ this.setPopState() //billy learn and fix back button
       this.anyRulesYes = false // tied to radio button
     }
 
-    // this.setCursorOnhtmlIdSubsetInputWithDelay()
+    this.setCursorOnhtmlIdSubsetInputWithDelay()
     
-    // if (this.subsetIn == 'NewGroupName1'){
-    //   this.radioButsDisabledYn = true
-    //   this.msg1 = 'first, rename this new group.'
-    // }
+    if (this.subsetIn == 'NewGroupName1'){
+      this.radioButsDisabledYn = true
+      this.msg1 = 'first, rename this new group.'
+    }
     
   } // end initStuff
 
@@ -112,14 +102,6 @@ this.setPopState() //billy learn and fix back button
   // Change the look of your app based on state
   // this.but27.innerText = this.state.buttonText
   } // end render27
-
-  detailButClicked(subset,sx){ 
-    this.jumpToWwgd(subset,sx) 
-  }
-
-  jumpToWwgd(subset,sx){this.wwgdJumpOut.emit()}
-
-  jumpToWwr(){this.wwrJumpOut.emit()}
 
   async setEventListenerWithDelay()  {
     // hack to wait for a bit before setting handler
@@ -147,25 +129,25 @@ this.setPopState() //billy learn and fix back button
     }
   } // end setPopState
 
-//   async setCursorOnhtmlIdSubsetInputWithDelay() {
-//     // hack to wait for a bit before setting cursor
-//     await new Promise(resolve => setTimeout(()=>resolve(), 100))
-//     .then(()=>this.setCursorOnhtmlIdSubsetInput());
-// } // end setCursorOnhtmlIdSubsetInputWithDelay
+  async setCursorOnhtmlIdSubsetInputWithDelay() {
+    // hack to wait for a bit before setting cursor
+    await new Promise(resolve => setTimeout(()=>resolve(), 100))
+    .then(()=>this.setCursorOnhtmlIdSubsetInput());
+} // end setCursorOnhtmlIdSubsetInputWithDelay
 
-  // setCursorOnhtmlIdSubsetInput(){
-  //   console.log('running setCursorOnhtmlIdSubsetInput')
-  //   let el: HTMLInputElement = 
-  //       document.getElementById('htmlIdSubsetInput') as HTMLInputElement
-  //   el.classList.remove('is-info')
-  //   el.classList.add('has-background-info-light')
-  //   el.focus()
+  setCursorOnhtmlIdSubsetInput(){
+    console.log('running setCursorOnhtmlIdSubsetInput')
+    let el: HTMLInputElement = 
+        document.getElementById('htmlIdSubsetInput') as HTMLInputElement
+    el.classList.remove('is-info')
+    el.classList.add('has-background-info-light')
+    el.focus()
 
-  //   if(this.subsetIn == 'NewGroupName1') {
-  //     el.select() //  select all text. needs a delay to work.
-  //     this.radioButsDisabledYn = true
-  //   }
-  // } // end setCursorOnhtmlIdSubsetInput
+    if(this.subsetIn == 'NewGroupName1') {
+      el.select() //  select all text. needs a delay to work.
+      this.radioButsDisabledYn = true
+    }
+  } // end setCursorOnhtmlIdSubsetInput
 
   subsetFocused(){
     console.log('running subsetFocused')
@@ -647,21 +629,13 @@ this.setPopState() //billy learn and fix back button
   }
 
   jumpToWwq(){this.wwqJumpOut.emit()}
-
+  jumpToWwr(){this.wwrJumpOut.emit()}
+  
   jumpToQnc(){
     console.log('doneWwg')
-    this.qncJumpOut.emit()
+    this.doneQncWwgOut.emit()
     this.rulesQncWwgOut.emit(this.rulesIn)
-  } // end doneWwg
-
-  countQuestionsPerGroup(){
-    let qCnt = 0
-    for (let i = 0; i<this.subsetArray.length; i++){
-      qCnt = this.questionsIn
-      .filter(q => q.subset==this.subsetArray[i].subset).length
-      this.subsetArray[i].qCount = qCnt
-    } 
-  } // end countQuestionsPerRule
+  } // end jumpToQnc
 
   buildRuleObj(){
     this.ruleObj = 
