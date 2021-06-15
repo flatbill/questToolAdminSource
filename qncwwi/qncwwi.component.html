@@ -1,38 +1,32 @@
-<div class='is-fullwidth has-background-warning is-size-5 pt-1 pb-1'>
-    &nbsp; Work With Invitations wwi    
- 
-   <a class='button has-background-warning is-small is-pulled-right '
-    (click)='jumpToQnc()'>
-     done &#10060; 
-   </a>  
-
-   <a class='button has-background-warning is-small is-pulled-right '
-    (click)='showHideHelp()'>
-     help &#10068; 
-   </a>
     
-   <span class=' is-pulled-right'>
-    <span class='tag is-dark is-small is-vcentered' 
+    <span class='tag is-dark is-small is-vcentered ml-3' 
       *ngIf='msg1.length > 0'>
       {{msg1}} 
     </span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   </span>
- </div>
 
  <table class='table is-fullwidth'>
    <thead> 
      <th>invite code</th>
      <th>invitation link</th>
+     <!-- blank th over buttons: -->
+     <th> </th>  
+     <th> </th>
    </thead>
    <tbody>
    <tr *ngFor='let i of invitesArray, index as ix'
-       class='has-background-success'> 
-       <td><span class='tag is-small is-rounded'>{{i.icode}}</span></td>
-       <td>{{i.ilink}}</td>
+       class='has-background-success-light'> 
+
+       <td> {{i.icode}} </td>
+       <td id="ilink-{{ix}}">{{i.ilink}}</td>
        <td>   
         <button class='button is-small is-info' 
-              (click)=detailButClicked(u)> 
+              (click)=copyButClicked(i.ilink)> 
+           copy Link 
+        </button> 
+     </td>
+       <td>   
+        <button class='button is-small is-info' 
+              (click)=detailButClicked(i)> 
            details 
         </button> 
      </td>
@@ -40,7 +34,12 @@
    </tbody>
  </table>
 
-<textarea cols=90 rows=30>
+ <div class='box mt-3 ml-3 has-background-danger-light'>
+<textarea class='ml-3 pl-3 has-background-danger-light' cols=120 rows=20 >
+  ed emails a link, link has imbedded icode, 
+  icode must have matching data
+  maybe a fauna table that has 'invitation' info.
+  this is an edit screen for invitation info?
   what does an invitation rec look like?
   icode field. 90210. a key so that a user can take the survey.
   ilink field. a URL.  https:\\bla.com?cust=1&qid=1&icode=90210
@@ -50,3 +49,4 @@
   when a test taker uses the ilink, prompt the testTaker to identify himself.
   this will append the test taker to the user list.
 </textarea>
+</div>

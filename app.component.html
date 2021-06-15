@@ -1,5 +1,5 @@
-<div class='containery'>
-<section *ngIf='showAppComponent'>
+  
+<!-- <section *ngIf='showAppComponent'>
   <div class='has-background-warning-light is-size-6 '>
     {{title}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <span class='is-size-7'>
@@ -7,36 +7,40 @@
       contains components: qnc wwg wwq wwqd
     </span>
   </div>
-</section>
+</section> -->
 
-<app-qnc   *ngIf="showQnc" 
-  [subsetsIn]="subsetArray"
-  [questionsIn]="questArray"
-  [showQnc]="showQnc" 
-  (subsetOut)="subsetFromQncFun($event)"
-  (subsetsOut)="ssArrayQncWwgFun($event)"
-  (rulesOut)="rulesArrayQncWwgFun($event)"
+<app-qncmen *ngIf="showQncMen"
+  [authIn]='qncAuthorized'
+  [showMenButsIn]='menuButsAlive'
+  [compTitleIn] = 'compTitle'
   (wwqJumpOut)="showWwqFun($event)"
   (wwgJumpOut)="showWwgFun($event)"
   (wwrJumpOut)="showWwrFun($event)"
   (wwiJumpOut)="showWwiFun($event)"
   (wwuJumpOut)="showWwuFun($event)"
-  >
+  (wwsJumpOut)="showWwsFun($event)"
+  (proJumpOut)="showProFun($event)"
+>
+</app-qncmen>
+
+<app-qnc   *ngIf="showQnc" 
+  [subsetsIn]="subsetArray"
+  [questionsIn]="questArray"
+  [showQnc]="showQnc" 
+>
 </app-qnc>
 
+<app-qncpro *ngIf="showQncPro">
+</app-qncpro>
+
 <app-qncwwg   *ngIf="showQncWwg" 
-   [showQnc]="showQnc"
    [rulesIn]="rulesArray"
-   [subsetIn]="subset"
    [questionsIn]="questArray"
    [subsetsIn]="subsetArray"
-   [meow]="meow"
-   [subsetsQncWwg]="subsetsQncWwg"
    (qncJumpOut)="showQncFun($event)"
    (wwqJumpOut) = "showWwqFun($event)"
    (wwrJumpOut) = "showWwrFun($event)"
    (wwgdJumpOut) = "showWwgdFun($event)"
-   (rulesQncWwgOut)="foxTrot($event)"
    >
 </app-qncwwg>
 
@@ -44,7 +48,8 @@
 </app-qncwwgd>
 
 <app-qncwwq  *ngIf="showQncWwq" 
-  [showQnc]="showQnc"
+  [custIn]="cust"
+  [qidIn]="qid"
   [subsetIn]="subset"
   [subsetsQncWwq]="subsetsQncWwq"
   [questionsIn]="questArray"
@@ -53,13 +58,15 @@
   (wwqQuestOut)="setQuestFromWwqFun($event)"
   (qncJumpOut)="showQncFun($event)"
   (wwqdJumpOut)="showWwqdFun($event)"
-  (wwgJumpOut)="showWwgFun($event)"
-  (wwrJumpOut)="showWwrFun($event)"
+  (wwsJumpOut)="showWwsFun($event)"
+  (proJumpOut)="showProFun($event)"
   (wwqQuestArray2Out)="setQuest2FromWwqFun($event)"
 > 
 </app-qncwwq>
 
 <app-qncwwqd   *ngIf="showQncWwqd" 
+  [custIn]="cust"
+  [qidIn]="qid"
   [questionNbrIn]="daQuestion"
   [questionsIn]="questArray"
   [questionsIn2]="questArray2"
@@ -69,14 +76,11 @@
 >
 </app-qncwwqd>
 
-
 <app-qncwwr *ngIf="showQncWwr" 
   [questionsIn]="questArray"
   [rulesIn]="rulesArray"
   [subsetsIn]="subsetArray"
   (qncJumpOut) = "showQncFun($event)"
-  (wwqJumpOut) = "showWwqFun($event)"
-  (wwgJumpOut) = "showWwgFun($event)"
   (wwrdJumpOut) = "showWwrdFun($event)"
 >
 </app-qncwwr>
@@ -88,17 +92,28 @@
 </app-qncwwrd>
 
 <app-qncwwi *ngIf="showQncWwi" 
+  [custIn]="cust"
+  [qidIn]="qid"
   (qncJumpOut) = "showQncFun($event)"
 >
 </app-qncwwi>
 
 <app-qncwwu *ngIf="showQncWwu" 
+  [custIn]="cust"
+  [qidIn]="qid" 
   (qncJumpOut) = "showQncFun($event)"
 >
 </app-qncwwu>
+
+<app-qncwws   *ngIf="showQncWws" 
+  [firstLoginIn] = 'firstLogin'
+  [authIn]='qncAuthorized'
+  (qncSetAuthOnOut) = "setAuthOnFun($event)"
+  (proJumpOut)="showProFun($event)"
+>
+</app-qncwws>
 
 <app-qncconv *ngIf="showQncConv" >
 </app-qncconv>
 
 
-</div>

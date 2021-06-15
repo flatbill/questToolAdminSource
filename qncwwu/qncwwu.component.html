@@ -1,34 +1,7 @@
-<div class='is-fullwidth has-background-warning is-size-5 pt-1 pb-1'>
-    &nbsp; Work With Users wwu    
- 
-   <a class='button has-background-warning is-small is-pulled-right '
-    (click)='jumpToQnc()'>
-     done &#10060; 
-   </a>  
-
-   <a class='button has-background-warning is-small is-pulled-right '
-    (click)='showHideHelp()'>
-     help &#10068; 
-   </a>
-
-   <!-- <span class='is-pulled-right'> &nbsp;
-    <span class='tag is-small is-info is-clickable '  
-           (click)='jumpToWwg()'> groups  </span>  &nbsp; 
-   </span> 
-
-   <span class='is-pulled-right'> &nbsp;
-     <span class='tag is-small is-info is-clickable '  
-         (click)='jumpToWwq()'> questions </span>  &nbsp;  
-   </span> -->
-    
-   <span class=' is-pulled-right'>
-    <span class='tag is-dark is-small is-vcentered' 
-      *ngIf='msg1.length > 0'>
-      {{msg1}} 
-    </span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   </span>
- </div>
+   <span class='tag is-dark is-small is-vcentered ml-3' 
+   *ngIf='msg1.length > 0'>
+   {{msg1}} 
+ </span>
 
  <table class='table is-fullwidth'>
    <thead> 
@@ -37,22 +10,34 @@
      <th>last name</th>
      <th>date time</th>
      <th>status</th>
+     <th>lastQuestion</th>
+    <!-- blank th over buttons: -->
+    <th> </th>  
+    <th> </th>
+     
    </thead>
    <tbody>
    <tr *ngFor='let u of usersArray, index as ux'
-       class='has-background-success'> 
+       class='has-background-success-light'> 
        <td>{{u.userId}}</td>
        <td>{{u.firstName}}</td>
        <td>{{u.lastName}}</td>
-       <td>{{u.userDateTime}}</td>
+       <td>{{u.localUserDateTime}}</td>
        <td>{{u.status}}</td>
+       <td>{{u.priorQ}}</td>
        <td>   
         <button class='button is-small is-info' 
         (click)=dnLoadButClicked(ux)> 
-          download
+          get csv
         </button> 
-        
-     </td>
+       </td>
+       <td>   
+        <button class='button is-small is-info' 
+        (click)=reportButClick(ux)> 
+          get report
+        </button> 
+       </td>
+
    </tr>
    </tbody>
  </table>

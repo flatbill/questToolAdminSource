@@ -9,18 +9,18 @@ import api from 'src/utils/api'
 })
 export class QncwwqComponent implements OnInit {
   constructor() { }
-  @Input() subsetIn: string
+  @Input() custIn
+  @Input() qidIn
   @Input() questionsIn
   @Input() questionsIn2
   @Input() rulesIn
   @Output() qncJumpOut = new EventEmitter()
   @Output() wwqdJumpOut = new EventEmitter()
-  @Output() wwgJumpOut = new EventEmitter()
-  @Output() wwrJumpOut = new EventEmitter()
+  //@Output() wwgJumpOut = new EventEmitter()
+  //@Output() wwrJumpOut = new EventEmitter()
   @Output() wwqQuestOut = new EventEmitter()
   @Output() wwqQuestArray2Out = new EventEmitter()
-  cust = '1'
-  qid  = '2'   //billy fix
+ 
   questArray2 = []
   questArray3 = [] 
   rulesArrayThisSubset = []
@@ -28,27 +28,24 @@ export class QncwwqComponent implements OnInit {
   symArUp    = '\u{2191}'
   symArDn    = '\u{2193}'
   symFilt    = '\u{2207}'  
-  // sortComboDn = this.symArDn +' sort '  
-  // sortComboUp = ' '    + this.symArUp 
-  // filtCombo = ' filt ' + this.symFilt
-  //symFiltOff =  '\u{236B}'
-  //myFacer    =  '\uD83D\uDE00'
   colHeadSf = false
-  msg1 = 'question list shown.'
+  msg1 = '?.'
   colSortByArray = []
   ngOnInit() {
-    console.log('running wwq ngOnInit')
-    this.questArray2 = this.questionsIn2
-    this.chkSubsetAccumMatch()
+    //this.msg1 = 'loading Questions...'
+    this.msg1 = 'Questions shown.'
+    console.log('running wwq ngOnInit============')
+    //console.table(this.questionsIn)
+    //console.table(this.questionsIn2)
+    if (this.questionsIn2.length > 0) {
+      this.questArray2 = this.questionsIn2
+    } else {
+      this.questArray2 = this.questionsIn
+    }
+    console.log('cust:',this.custIn)
+    console.log('qid:',this.qidIn)
   }  //end ngOnInit
 
-  chkSubsetAccumMatch(){
-    let subsetTempVarr = this.subsetIn, //clever way to pass into .filter
-      rulesTempArray = this.rulesIn
-      .filter(function(r){ return r.subset == subsetTempVarr })  
-    this.rulesArrayThisSubset = rulesTempArray 
-    console.table(this.rulesArrayThisSubset)
-  } // end chkSubsetAccumMatch
 
   colHeadClicked(c){
     // hide/show sort & filter icons in the table header (lower part)
@@ -96,14 +93,17 @@ export class QncwwqComponent implements OnInit {
   } // end colSort
 
   colFilt(fn,pt){ //parms fieldname and prompt text
-  console.log('running colFilt ', fn, pt)
-  this.msg1 = 'question list is filtered.'
-  let filtWord = prompt('Filter ' + pt)
-  if (filtWord == null || filtWord == "") {
-    // User cancelled the prompt. 
-    return}
-  this.colFiltPartB(fn, filtWord) // set questions3 array
-  this.questArray2 = this.questArray3 // billy temp.  need array strategy.
+    console.log('running colFilt ', fn, pt)
+    let filtWord = prompt('Filter ' + pt)
+    if (filtWord == null || filtWord == "") {
+      // User cancelled the prompt.
+      this.msg1 = 'filter cancelled. '
+      this.rq()
+    } else {
+      this.colFiltPartB(fn, filtWord) // set questions3 array
+      this.questArray2 = this.questArray3 // billy temp.  need array strategy.
+      this.msg1 = 'question list filtered.'
+    }
   } // end colFilt 
 
   colFiltPartB(fn,fw){ // field name, filter word
@@ -140,20 +140,15 @@ export class QncwwqComponent implements OnInit {
     this.qncJumpOut.emit()
   }
 
-  jumpToWwg() {this.wwgJumpOut.emit()}
-  jumpToWwr() {this.wwrJumpOut.emit()}
+  //jumpToWwg() {this.wwgJumpOut.emit()}
+  //jumpToWwr() {this.wwrJumpOut.emit()}
 
-  showHideHelp(){alert(
-    'list the questions for this group.'+ "\r\n"
-    + 'provide for sequencing questions.'+ "\r\n"
-    + 'click on a question to jump into'+ "\r\n"
-    + 'field changes for one question. '+ "\r\n"
-    + 'provide a button for new question. '+ "\r\n"
-  )}
 
   launchQtReadQuestions = (ev) => {
+    // billy, this is never called?
+    // already have questions in arrays?
     console.log('running launchQtReadQuestions')
-    api.qtReadQuestions(this.cust,this.qid)
+    api.qtReadQuestions(this.custIn,this.qidIn)
     .then 
         (   (qtDbRtnObj) => 
           {
@@ -169,7 +164,7 @@ export class QncwwqComponent implements OnInit {
 
   launchQtReadRules = (ev) => {
     console.log('running launchQtReadRules')
-    api.qtReadRules(this.cust,this.qid)
+    api.qtReadRules(this.custIn,this.qidIn)
     .then 
         (   (qtDbRtnObj) => 
           {
@@ -183,6 +178,7 @@ export class QncwwqComponent implements OnInit {
   } //end LaunchQtReadRules 
 
   buildQuestArray(dbObj){
+    // billy, why is this thing run twice from .then's?
     console.log('running wwq buildQuestArray')
     // strip off fauna wrapper stuff from , yield a quest array
     // take qtDbObj from database and write to mingo array.
@@ -202,24 +198,19 @@ export class QncwwqComponent implements OnInit {
     this.colSortByArray = []
   }
 
-  clunk(){
-    
- 
-let obj1 = {
-  fruit: 'banana',
-  color: 'yellow'
-};
- 
-// the array should be sorted first, like
-Object.entries(obj1).sort((a, b) => b[0].localeCompare(a[0]))
- 
- 
-for (let [obj1KeyName, obj1Value] of Object.entries(obj1)) {
-  console.log(`${obj1KeyName}: ${obj1Value}`) 
-  console.log(obj1KeyName) // 'fruit'
-  console.log(obj1Value)   // 'banana'
-}
-  }
+  testClunk(){
+    let obj1 = {  
+    fruit: 'banana',
+    color: 'yellow'
+    }
+    // the array should be sorted first, like
+    Object.entries(obj1).sort((a, b) => b[0].localeCompare(a[0]))
+    for (let [obj1KeyName, obj1Value] of Object.entries(obj1)) {
+      console.log(`${obj1KeyName}: ${obj1Value}`) 
+      console.log(obj1KeyName) // 'fruit'
+      console.log(obj1Value)   // 'banana'
+    }
+  } //end testClunk
 
 } // end export class
 

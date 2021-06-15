@@ -10,8 +10,7 @@ import api from 'src/utils/api'
 })
 export class QncwwgComponent implements OnInit {
   constructor() {}
-  @Input('showQncWwg') showQncWwgName: boolean
-  @Input() meow: string
+  // @Input('showQncWwg') showQncWwgName: boolean
   @Input() subsetsQncWwg
   @Input() rulesIn  
   @Input() subsetIn

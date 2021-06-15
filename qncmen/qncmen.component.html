@@ -1,0 +1,23 @@
+<div class='selz-sticky-top ' >
+  <div class=' columns has-background-warning is-marginless is-gapless '>
+    <div class='column is-one-fifth'> &nbsp; {{compTitleIn}} </div> 
+    <div class='column is-three-fifths'>
+        <span *ngIf='showMenButsIn'>
+          <span id='profile' class='tag is-small is-info m-1 is-clickable has-background-primary' (click)=jumpToPro() >profile</span> 
+          <span id='questions' class='tag is-small is-info m-1 is-clickable' (click)=jumpToWwq()>questions</span> 
+          <span id='groups' class='tag is-small is-info m-1 is-clickable' (click)=jumpToWwg()>groups</span>  
+          <span id='rules' class='tag is-small is-info m-1 is-clickable' (click)=jumpToWwr()>rules</span> 
+          <span id='invitations' class='tag is-small is-info m-1 is-clickable' (click)=jumpToWwi()>invitations</span> 
+          <span id='users' class='tag is-small is-info m-1 is-clickable' (click)=jumpToWwu()>users</span> 
+          <span id='logout' class='tag is-small is-info m-1 is-clickable' (click)=jumpToWws()>logout</span> 
+        </span>
+    </div>
+    <div class='column is-one-fifth'>
+      <span class='button has-background-warning is-small is-pulled-right '
+          (click)='showHideHelp()'>
+          <span> Help &#10068; </span>
+      </span>
+      <span *ngIf='showMsg1' class='tag is-small is-dark'>{{msg1}}</span> 
+    </div> 
+</div>
+</div>

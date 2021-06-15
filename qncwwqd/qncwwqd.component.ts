@@ -8,6 +8,8 @@ import api from 'src/utils/api'
 })
 export class QncwwqdComponent implements OnInit {
   constructor() { }
+  @Input() custIn
+  @Input() qidIn
   @Input() questionNbrIn
   @Input() questionsIn  // full     quest list
   @Input() questionsIn2 // filtered quest list
@@ -23,15 +25,14 @@ export class QncwwqdComponent implements OnInit {
   qtDbDataObj = {} 
   pendingAddQx = -1
   ngOnInit() {
-    this.findQuestIx()
-    this.chkSubsetAccumMatch(this.questionsIn2[this.qx].subset)
+    //this.chkSubsetAccumMatch(this.questionsIn2[this.qx].subset)
     if (this.questionsIn2.length == 0){
       this.questionsIn2 = this.questionsIn }
-    console.log('wwqd questionsIn:')
-    console.table(this.questionsIn)
-    console.log('wwqd questionsIn2:')
-    console.table(this.questionsIn2)
-    
+    this.findQuestIx()
+    // console.log('wwqd questionsIn:')
+    // console.table(this.questionsIn)
+    // console.log('wwqd questionsIn2:')
+    // console.table(this.questionsIn2)
   }
 
   prevButClick(){
@@ -56,19 +57,20 @@ export class QncwwqdComponent implements OnInit {
     let questNbrMax = 
       Math.max.apply(Math, this.questionsIn.map(function(q) { return q.questNbr }))
     let newQuestNbr = (questNbrMax + 1).toString().padStart(3, '0')
-
+    let ranSeq = 
+      (Math.floor(Math.random() * Math.floor(9999))).toString()
     this.questionsIn2.push(
       {
-      cust: "1",
-      qid: "2",
-      questNbr: newQuestNbr,
-      questSeq: "001",
-      questTxt: "new question text",
-      preQuest: "new pre-question text",
-      aca: ["answer choice text"],
-      acaPointVals: [0],
-      accum: ["Scoreboard1"],
-      subset: 'group1'
+       cust: this.custIn,
+       qid: this.qidIn,
+       questNbr: newQuestNbr,
+       questSeq: ranSeq,
+       questTxt: "new question text",
+       preQuest: "new pre-question text",
+       aca: ["answer choice text"],
+       acaPointVals: [0],
+       accum: ["Scoreboard1"],
+       subset: 'group1'
       }
     )
     // billy gotta push into both arrays.
@@ -109,7 +111,7 @@ export class QncwwqdComponent implements OnInit {
 
   delButClick(){
    // delete question from question array.
-   // billy, call database api
+   // call database api
    // figure out qx of the on-screen question, 
    // and delete-splice it from array:
    let questNbrWork = this.questionsIn2[this.qx].questNbr  
@@ -134,6 +136,11 @@ export class QncwwqdComponent implements OnInit {
    //billy, if he deleted all questions, blank out the screen?
   } // end delButClick
 
+  ranSeqButClick(qx){
+   this.questionsIn2[qx].questSeq =
+     (Math.floor(Math.random() * Math.floor(9999))).toString()
+  }
+
   questTxtChg(ev,qx){
     // console.log('running questTxtChg',ev.target.value)
     this.questionsIn2[qx].questTxt = ev.target.value
@@ -143,8 +150,6 @@ export class QncwwqdComponent implements OnInit {
 
   questSeqChg(ev,qx){
     this.questionsIn2[qx].questSeq = ev.target.value
-    // billy maybe re-sort the question array by sequence?
-    // see app.component sort
   } // end questSeqChg
 
   subsetChg(ev,qx){
@@ -176,17 +181,40 @@ export class QncwwqdComponent implements OnInit {
     this.questionsIn2[qx].aca[ax] = ev.target.value
   } // end questAcaChg
 
-  questAccumChg(ev,qx){
-    this.questionsIn2[qx].accum[0] = ev.target.value
+  questAccumChg(ev,qx,accumNbr) {
+    console.log('running questAccumChg')
+    ev.target.value = ev.target.value.trim()
+    if (ev.target.value.length == 0) {
+      this.questionsIn2[qx].accum.splice(accumNbr,1) //delete accum
+    } else { 
+      this.questionsIn2[qx].accum[accumNbr] = ev.target.value
+    }
   } // end questAccumChg
 
   questAcaPointValChg(ev,qx,ax){
-    this.questionsIn2[qx].acaPointVals[ax] = ev.target.value
-    // html input formats PointVal field as a string,
-    // so parseInt the pointval into a number.
-    if (typeof(ev.target.value) == 'string') {
-      this.questionsIn2[qx].acaPointVals[ax] = parseInt(ev.target.value)
+    
+    
+    // if (Number(ev.target.value) == 5 ){alert('big wolf')}
+    if (Number(ev.target.value) > -1 
+    &&  Number(ev.target.value) <= 99999) {
+      // he entered a nice number
+      this.questionsIn2[qx].acaPointVals[ax] = ev.target.value
+      // html input formats PointVal field as a string,
+      // so parseInt the pointval into a number.
+      if (typeof(ev.target.value) == 'string') {
+        this.questionsIn2[qx].acaPointVals[ax] = parseInt(ev.target.value)
+      }
+    } else {
+      alert('non numeric, Eric.')
     }
+     
+
+  }
+
+  acaFrameChg(ev,qx){
+    this.questionsIn2[qx].acaFrame = ev.target.value
+    this.questionsIn2[qx].acaFrame = ["never","always"]
+    this.questionsIn2[qx].acaFrame = ev.target.value.split(",")
   }
 
   setSubsetForRules(subsetOld,subsetNew){
@@ -246,7 +274,7 @@ export class QncwwqdComponent implements OnInit {
 
   findQuestIx(){
     this.qx = this.questionsIn2
-      .findIndex(q => q.questNbr == this.questionNbrIn)
+    .findIndex(q => q.questNbr == this.questionNbrIn)
   } // end findQuestIx
 
   chkSubsetAccumMatch(subsetParmIn){ 
@@ -281,6 +309,75 @@ export class QncwwqdComponent implements OnInit {
     elId.scrollIntoView();
   }
 
+  setAnswerChoice13(){
+    console.log('running setAnswerChoice13')
+    // append into question.aca array and append into question.acaPoints
+    this.msg1 = 'answer choices set to 1-3.  hit save.'
+    this.questionsIn2[this.qx].aca = []
+    this.questionsIn2[this.qx].aca[0] = '1'
+    this.questionsIn2[this.qx].aca[1] = '2'
+    this.questionsIn2[this.qx].aca[2] = '3'
+    this.questionsIn2[this.qx].acaPointVals   = []
+    this.questionsIn2[this.qx].acaPointVals[0] = 1
+    this.questionsIn2[this.qx].acaPointVals[1] = 2
+    this.questionsIn2[this.qx].acaPointVals[2] = 3
+    // console.table(this.questionsIn[this.qx])
+    let elId: HTMLInputElement = 
+      document.getElementById('htmlIdBottomOfPage') as HTMLInputElement
+    elId.scrollIntoView();
+  }
+
+  setAnswerChoice15(){
+    console.log('running setAnswerChoice15')
+    // append into question.aca array and append into question.acaPoints
+    this.msg1 = 'answer choices set to 1-5.  hit save.'
+    this.questionsIn2[this.qx].aca = []
+    this.questionsIn2[this.qx].aca[0] = '1'
+    this.questionsIn2[this.qx].aca[1] = '2'
+    this.questionsIn2[this.qx].aca[2] = '3'
+    this.questionsIn2[this.qx].aca[3] = '4'
+    this.questionsIn2[this.qx].aca[4] = '5'
+    this.questionsIn2[this.qx].acaPointVals   = []
+    this.questionsIn2[this.qx].acaPointVals[0] = 1
+    this.questionsIn2[this.qx].acaPointVals[1] = 2
+    this.questionsIn2[this.qx].acaPointVals[2] = 3
+    this.questionsIn2[this.qx].acaPointVals[3] = 4
+    this.questionsIn2[this.qx].acaPointVals[4] = 5
+    // console.table(this.questionsIn[this.qx])
+    let elId: HTMLInputElement = 
+      document.getElementById('htmlIdBottomOfPage') as HTMLInputElement
+    elId.scrollIntoView();
+  }
+
+  setAnswerChoice18(){
+    console.log('running setAnswerChoice18')
+    // append into question.aca array and append into question.acaPoints
+    this.msg1 = 'answer choices set to 1-8.  hit save.'
+    this.questionsIn2[this.qx].aca = []
+    this.questionsIn2[this.qx].aca[0] = '1'
+    this.questionsIn2[this.qx].aca[1] = '2'
+    this.questionsIn2[this.qx].aca[2] = '3'
+    this.questionsIn2[this.qx].aca[3] = '4'
+    this.questionsIn2[this.qx].aca[4] = '5'
+    this.questionsIn2[this.qx].aca[5] = '6'
+    this.questionsIn2[this.qx].aca[6] = '7'
+    this.questionsIn2[this.qx].aca[7] = '8'
+    this.questionsIn2[this.qx].acaPointVals   = []
+    this.questionsIn2[this.qx].acaPointVals[0] = 1
+    this.questionsIn2[this.qx].acaPointVals[1] = 2
+    this.questionsIn2[this.qx].acaPointVals[2] = 3
+    this.questionsIn2[this.qx].acaPointVals[3] = 4
+    this.questionsIn2[this.qx].acaPointVals[4] = 5
+    this.questionsIn2[this.qx].acaPointVals[5] = 6
+    this.questionsIn2[this.qx].acaPointVals[6] = 7
+    this.questionsIn2[this.qx].acaPointVals[7] = 8
+
+    // console.table(this.questionsIn[this.qx])
+    let elId: HTMLInputElement = 
+      document.getElementById('htmlIdBottomOfPage') as HTMLInputElement
+    elId.scrollIntoView();
+  }
+
   delAnswerChoice(ax){
     // console.log('running delChoice. qx: ',this.qx,'ax: ',ax,)
     // delete-splice from the aca from this question
@@ -300,13 +397,12 @@ export class QncwwqdComponent implements OnInit {
   showHideHelp(){
     alert('show some help')
   } // end showHideHelp
-  
 
   buildQuestionObj(){
     this.questObj = 
     {
-      cust: "1",
-      qid: "2",
+      cust: this.custIn,
+      qid: this.qidIn,
       questNbr: this.questionsIn2[this.qx].questNbr,
       questSeq: this.questionsIn2[this.qx].questSeq,
       questTxt: this.questionsIn2[this.qx].questTxt,
@@ -314,7 +410,8 @@ export class QncwwqdComponent implements OnInit {
       aca:      this.questionsIn2[this.qx].aca,
       acaPointVals: this.questionsIn2[this.qx].acaPointVals,
       accum:   this.questionsIn2[this.qx].accum,
-      subset:  this.questionsIn2[this.qx].subset 
+      subset:  this.questionsIn2[this.qx].subset,
+      acaFrame:  this.questionsIn2[this.qx].acaFrame
     }
     // console.table(this.questObj)
   }
@@ -327,7 +424,7 @@ export class QncwwqdComponent implements OnInit {
     .catch(() => {
       console.log('launchQtWriteQuestion error. questObj:' +  this.questObj)
     })
-    } //end launchQtWriteQuestion
+  } //end launchQtWriteQuestion
    
   launchQtDeleteQuestion = () => {
     console.log('running  wwqd launchQtDeleteQuestion')
@@ -339,7 +436,7 @@ export class QncwwqdComponent implements OnInit {
     })
   } //end launchQtDeleteQuestion
  
- launchQtUpdateQuestion = () => {
+  launchQtUpdateQuestion = () => {
   console.log('running  wwqd launchQtUpdateQuestion')
   api.qtUpdateQuestion(this.questObj)
   .then ((qtDbRtnObj) => {this.qtDbDataObj = qtDbRtnObj.data})

@@ -1,41 +1,8 @@
-<div class='is-fullwidth has-background-warning is-size-5 pt-1 pb-1' >
-    &nbsp; Work with Questions    wwq
 
-    &nbsp;&nbsp;
-    <span  (click)='rq()'  
-             class='tag is-small is-info is-clickable' >
-    reset filter  </span>
-
-   <a class='button has-background-warning is-small is-pulled-right '
-    (click)='jumpToQnc()'>
-     done &#10060; 
-   </a>  
-
-   <a class='button has-background-warning is-small is-pulled-right '
-      (click)='showHideHelp()'>
-       help &#10068; 
-   </a> 
-
-   <span class='is-pulled-right'> &nbsp;
-    <span class='tag is-small is-info is-clickable '  
-           (click)='jumpToWwg()'> groups  </span>  &nbsp; 
-   </span> 
-
-   <span class='is-pulled-right'> &nbsp;
-     <span class='tag is-small is-info is-clickable '  
-         (click)='jumpToWwr()'> rules </span>  &nbsp;  
-   </span>
-     
-  <span class=' is-pulled-right'>
-    <span class='tag is-dark is-small is-vcentered' 
-      *ngIf='msg1.length > 0'>
-      {{msg1}} 
-    </span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- </span>
-
- <!-- <div class='mb-1'> ...&nbsp;</div> -->
-</div>
+<span class='tag is-dark is-small is-vcentered ml-3' 
+   *ngIf='msg1.length > 0'>
+{{msg1}} 
+</span>
 
   <table class='table is-fullwidth'>
     <thead >
@@ -107,7 +74,7 @@
     </thead>
     <tbody class=none>
         <tr *ngFor='let q of questArray2, index as qx'
-             class='has-background-success' 
+             class='has-background-success-light' 
         >        
         <td class='pl-5 pr-5'  > {{q.questNbr}}  </td> 
         <td class='pl-5 pr-5'  > {{q.questSeq}}  </td> 

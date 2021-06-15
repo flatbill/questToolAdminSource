@@ -9,26 +9,32 @@ import api from 'src/utils/api'
 })
 export class QncwwrComponent implements OnInit {
   rulesArray = []
-  msg1 = 'rules shown.'
+  msg1 = '?'
   constructor() { }
   @Input() rulesIn  
   @Input() questionsIn
   @Input() subsetsIn
-  @Output() wwqJumpOut = new EventEmitter() 
+  // @Output() wwqJumpOut = new EventEmitter() 
   @Output() qncJumpOut = new EventEmitter() 
-  @Output() wwgJumpOut = new EventEmitter() 
+  // @Output() wwgJumpOut = new EventEmitter() 
   @Output() wwrdJumpOut = new EventEmitter() 
 
 
   ngOnInit() {
-    console.table(this.rulesIn)
+    //console.table(this.rulesIn)
     this.rulesArray = this.rulesIn
-    this.countQuestionsPerRule()
+    if (this.rulesArray.length == 0){
+      this.msg1 = 'No rules exist for this test.'
+    } else {
+      this.msg1 = 'Rules Shown.'
+
+      this.countQuestionsPerRule()
+    }
   }
 
   jumpToQnc(){ this.qncJumpOut.emit() }
-  jumpToWwq(){ this.wwqJumpOut.emit() }
-  jumpToWwg(){ this.wwgJumpOut.emit() }
+  // jumpToWwq(){ this.wwqJumpOut.emit() }
+  // jumpToWwg(){ this.wwgJumpOut.emit() }
   jumpToWwrd(rule,rx){ this.wwrdJumpOut.emit() }
   showHideHelp(){}
   doneWwr(){}

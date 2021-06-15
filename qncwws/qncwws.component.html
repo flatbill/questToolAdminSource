@@ -1,0 +1,111 @@
+<!-- <div class='is-fullwidth has-background-warning-light is-size-5 pt-1 pb-1'>
+</div> -->
+
+ <!-- <span class=' is-pulled-right'>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ </span> -->
+
+ <span class='ml-3 tag is-dark is-small is-vcentered' 
+   *ngIf='msg1.length > 0'>
+   {{msg1}} 
+</span>
+
+
+ <section *ngIf="showSignHtml" class='ml-3 mr-3 mt-3 box has-background-success-light   ' >
+  <table class=' table has-background-success-light is-narrow'>
+    <tr>
+      <td><label>customer Id: </label></td>
+      <td><input  
+        autofocus
+        value= {{cust}}
+        size="16"
+        (change)=custChg($event)
+        autocomplete="off"></td>
+    </tr>
+    
+    <tr>
+      <td><label>password: </label></td>
+      <td><input  
+        maxlength="16"
+        value= {{passInput}}
+        size="16"
+        (change)=passChg($event)
+        type = 'noNagPassword'
+        style="-webkit-text-security: disc;"
+        autocomplete="off"></td>
+    </tr>
+    <!-- <tr>
+      <td><label>confirm password: </label></td>
+      <td><input  
+        maxlength="10"
+        value= {{passInput2}}
+        size="10"
+        (change)=passChg2($event)
+        type = 'noNagPassword'
+        style="-webkit-text-security: circle;"
+        autocomplete="off"></td>
+    </tr> -->
+
+    <tr> <td>&nbsp;</td> 
+      <td><button 
+        class='button is-link is-pulled-right  is-small is-outlined'
+        (click)='doSign()'
+        >go</button></td>
+    </tr>
+  </table>
+  &nbsp;
+</section>
+
+<!-- <div>
+  <button  (click)='doWukka()'>wukka</button> 
+</div> -->
+
+
+<section class='ml-3 mr-3 mt-3 box has-background-danger-light'>
+<textarea cols=120 rows=20 class='has-background-danger-light ml-3 pl-3'>
+wws  Login.
+shown as first screen, and shown after Logout.   
+June2021, no login required yet , just hit Go... 
+
+ Login for customers like Ed, Bill, Fred, Barney
+Appears as start page for  qnc.netlify.app 
+
+
+part1 login screen, without validation
+part2 login screen, with db validation
+part3 login screen, with auth0
+
+
+after login, jump to Profile.
+Jun2021 dont show menu buttons until qncAuthorized. controlled by app component.
+signHtml has a GO button, will launch validateUser()
+validateUser() will read fauna cust db by name, match encrypted pass
+cust 1 is user ed        Ed Murray       pass: --------  has tests 1,2,3,4,5
+cust 2 is user bill	     Bill Selzer     pass: --------
+cust 3 is user fred      Fred Flintstone pass: GoneFishing1!
+cust 4 is user barney    Barney Rubble   pass: GoneHunting1!
+ 
+  ===================
+  prompt for cust credentials
+  validate credentials against cust table.
+  cust means customer of qnc.
+  the customer needs to sign on this screen,
+  to enable him to edit questions, etc.
+
+  auth0 hints:
+  https://docs.netlify.com/visitor-access/oauth-provider-tokens/
+  might need app name finalized 
+  before i can tie it to netlify auth0.
+
+
+bare bones cust table in fauna:
+Selzer Software Services will add a rec to the fauna cust table,
+everytime SSS gets a new cust, or wants a subscription.
+in the cust table, there is a cust id & pass.
+edMurray    (his userId. his choice.)
+edMurray@foo.com (his email address. his choice.)
+pass: use decoder to store a passwd.
+
+</textarea>
+</section>
+
